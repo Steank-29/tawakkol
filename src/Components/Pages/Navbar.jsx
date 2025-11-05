@@ -34,7 +34,8 @@ import {
   ChevronRight,
   ChevronLeft
 } from '@mui/icons-material';
-import tawakkol from '../Pages/tawakkol.png';
+import { useNavigate } from 'react-router-dom';
+import tawakkol from '../../assets/tawakkol.png';  
 
 const premiumColors = {
   noir: '#1a1a1a',
@@ -74,6 +75,13 @@ const PremiumAppBar = ({ children, window }) => {
 };
 
 const SecondaryNavbar = ({ open, onClose, categories }) => {
+  const navigate = useNavigate();
+
+  const handleCategoryClick = (path) => {
+    navigate(path);
+    onClose();
+  };
+
   return (
     <Collapse 
       in={open} 
@@ -161,8 +169,7 @@ const SecondaryNavbar = ({ open, onClose, categories }) => {
                       {category.items.map((item) => (
                         <Button
                           key={item.name}
-                          href={item.path}
-                          onClick={onClose}
+                          onClick={() => handleCategoryClick(item.path)}
                           startIcon={<ChevronRight sx={{ fontSize: 16 }} />}
                           sx={{
                             justifyContent: 'flex-start',
@@ -258,6 +265,7 @@ const SecondaryNavbar = ({ open, onClose, categories }) => {
 
 const MobileCategoriesMenu = ({ open, onClose, categories }) => {
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const navigate = useNavigate();
 
   const handleCategoryClick = (category) => {
     setSelectedCategory(category);
@@ -267,7 +275,8 @@ const MobileCategoriesMenu = ({ open, onClose, categories }) => {
     setSelectedCategory(null);
   };
 
-  const handleItemClick = () => {
+  const handleItemClick = (path) => {
+    navigate(path);
     onClose();
     setSelectedCategory(null);
   };
@@ -361,7 +370,7 @@ const MobileCategoriesMenu = ({ open, onClose, categories }) => {
             {selectedCategory.items.map((item) => (
               <ListItem 
                 key={item.name}
-                onClick={handleItemClick}
+                onClick={() => handleItemClick(item.path)}
                 sx={{ 
                   py: 2,
                   borderBottom: `1px solid ${alpha(premiumColors.gold, 0.1)}`,
@@ -412,6 +421,7 @@ const Navbar = () => {
   const [mobileCategoriesOpen, setMobileCategoriesOpen] = useState(false);
   const categoriesRef = useRef(null);
   const navbarRef = useRef(null);
+  const navigate = useNavigate();
 
   const categories = [
     {
@@ -507,8 +517,15 @@ const Navbar = () => {
         handleCategoriesToggle();
       }
     } else {
+      // Navigate to the path for regular links
+      navigate(link.path);
       setCategoriesOpen(false);
+      setMobileOpen(false);
     }
+  };
+
+  const handleLogoClick = () => {
+    navigate('/');
   };
 
   const navLinks = [
@@ -535,7 +552,7 @@ const Navbar = () => {
       flexDirection: 'column'
     }}>
       <Box sx={{ p: 3, display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: `1px solid ${alpha(premiumColors.gold, 0.2)}` }}>
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }} onClick={handleLogoClick}>
           <Box
             sx={{
               width: 40,
@@ -620,6 +637,10 @@ const Navbar = () => {
       <Box sx={{ p: 3, borderTop: `1px solid ${alpha(premiumColors.gold, 0.1)}` }}>
         <Button 
           variant="contained"
+          onClick={() => {
+            navigate('/login');
+            handleDrawerToggle();
+          }}
           fullWidth
           sx={{
             background: `linear-gradient(45deg, ${premiumColors.gold}, ${premiumColors.goldDark})`,
@@ -671,8 +692,9 @@ const Navbar = () => {
               flexGrow: { xs: 1, md: 0 },
               mr: { md: 6 },
               display: 'flex',
-              alignItems: 'center'
-            }}>
+              alignItems: 'center',
+              cursor: 'pointer'
+            }} onClick={handleLogoClick}>
               <Box
                 sx={{
                   width: { xs: 35, md: 45 },
@@ -710,7 +732,6 @@ const Navbar = () => {
                 background: `linear-gradient(45deg, ${premiumColors.gold}, ${premiumColors.goldLight})`,
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
-                cursor: 'pointer',
                 transition: 'all 0.3s ease'
               }}>
                 Tawakkol
@@ -810,6 +831,7 @@ const Navbar = () => {
 
                 <Button
                   variant="outlined"
+                  onClick={() => navigate('/login')}
                   sx={{
                     borderColor: alpha(premiumColors.gold, 0.4),
                     color: premiumColors.gold,
