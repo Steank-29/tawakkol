@@ -3,6 +3,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { Toaster } from 'sonner'; 
 import ScrollToTop from "./Config/ScrollToTop";
 import Login from './Components/Pages/Login';
+import Home from './Components/Pages/Home';
 import Contact from './Components/Pages/Contact'; 
 import Layout from './Config/Layout';
 import NotFound from './Config/Notfound';
@@ -11,6 +12,14 @@ function App() {
   const router = createBrowserRouter([
     {
       path: '/',
+      element: (
+        <Layout>
+          <Home />
+        </Layout>
+      )
+    },
+    {
+      path: '/login',
       element: (
         <Layout>
           <Login />

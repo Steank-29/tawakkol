@@ -111,7 +111,7 @@ const SecondaryNavbar = ({ open, onClose, categories }) => {
                   color: premiumColors.gold,
                   fontFamily: "'Playfair Display', serif",
                   fontWeight: 600,
-                  fontSize: '1.2rem'
+                  fontSize: '1.5rem'
                 }}
               >
                 Nos Collections
@@ -157,8 +157,8 @@ const SecondaryNavbar = ({ open, onClose, categories }) => {
                         sx={{ 
                           color: premiumColors.gold,
                           fontWeight: 600,
-                          fontSize: '1rem',
-                          fontFamily: "'Inter', sans-serif"
+                          fontSize: '1.4rem',
+                          fontFamily: "'Playfair Display', serif",
                         }}
                       >
                         {category.title}
@@ -353,7 +353,7 @@ const MobileCategoriesMenu = ({ open, onClose, categories }) => {
                     primary={category.title} 
                     sx={{
                       '& .MuiListItemText-primary': {
-                        fontFamily: "'Inter', sans-serif",
+                        fontFamily: "'Playfair Display', serif",
                         fontWeight: 500,
                         fontSize: '1.1rem',
                         color: premiumColors.white,
@@ -386,7 +386,7 @@ const MobileCategoriesMenu = ({ open, onClose, categories }) => {
                     primary={item.name} 
                     sx={{
                       '& .MuiListItemText-primary': {
-                        fontFamily: "'Inter', sans-serif",
+                        fontFamily: "'Playfair Display', serif",
                         fontWeight: item.featured ? 600 : 400,
                         fontSize: '1rem',
                         color: premiumColors.white,
@@ -539,7 +539,7 @@ const Navbar = () => {
   const socialIcons = [
     { icon: <Facebook sx={{ fontSize: 20 }} />, color: '#1877F2' },
     { icon: <Twitter sx={{ fontSize: 20 }} />, color: '#1DA1F2' },
-    { icon: <Instagram sx={{ fontSize: 20 }} />, color: '#E4405F' },
+    { icon: <Instagram sx={{ fontSize: 20 }} />, color: '#E4405F', path: 'https://www.instagram.com/tawakkol_wear/' },
   ];
 
   const drawer = (
@@ -620,9 +620,9 @@ const Navbar = () => {
               primary={item.name} 
               sx={{
                 '& .MuiListItemText-primary': {
-                  fontFamily: "'Inter', sans-serif",
+                  fontFamily: "'Playfair Display', serif",
                   fontWeight: 500,
-                  fontSize: '1.1rem',
+                  fontSize: '1.3rem',
                   color: premiumColors.white,
                   display: 'flex',
                   alignItems: 'center'
@@ -663,6 +663,7 @@ const Navbar = () => {
         <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2 }}>
           {socialIcons.map((social, index) => (
             <IconButton 
+              href={social.path ? social.path : '#'}
               key={index} 
               sx={{ 
                 color: premiumColors.gold,
@@ -753,10 +754,10 @@ const Navbar = () => {
                   sx={{
                     color: hoveredLink === index ? premiumColors.gold : premiumColors.white,
                     fontWeight: 600,
-                    fontSize: '0.95rem',
+                    fontSize: '1.15rem',
                     position: 'relative',
                     textTransform: 'none',
-                    fontFamily: "'Inter', sans-serif",
+                    fontFamily: "'Playfair Display', serif",
                     minWidth: 'auto',
                     px: 2,
                     '&::after': {
@@ -801,6 +802,7 @@ const Navbar = () => {
                 <Box sx={{ display: { xs: 'none', lg: 'flex' }, gap: 1 }}>
                   {socialIcons.map((social, index) => (
                     <IconButton
+                      href={social.path ? social.path : '#'}
                       key={index}
                       sx={{
                         color: premiumColors.gold,
@@ -840,7 +842,7 @@ const Navbar = () => {
                     px: 3,
                     py: 1,
                     borderRadius: 2,
-                    fontFamily: "'Inter', sans-serif",
+                    fontFamily: "'Playfair Display', serif",
                     '&:hover': {
                       borderColor: premiumColors.gold,
                       background: alpha(premiumColors.gold, 0.1),

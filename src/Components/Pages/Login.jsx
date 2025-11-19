@@ -73,7 +73,7 @@ const CustomToast = ({ type, email, message, onDismiss, progress }) => {
         backdropFilter: 'blur(25px)',
         boxShadow: `0 12px 40px ${isSuccess ? premiumColors.success + '25' : premiumColors.error + '25'}`,
         maxWidth: 450,
-        fontFamily: "'Inter', sans-serif",
+        fontFamily: "'Playfair Display', serif",
         position: 'relative',
         overflow: 'hidden',
         '&::before': {
@@ -466,7 +466,7 @@ const Login = ({ onClose, onSwitchToSignup }) => {
                   variant="h5"
                   sx={{
                     color: premiumColors.noir + 'F0',
-                    fontFamily: "'Inter', sans-serif",
+                    fontFamily: "'Playfair Display', serif",
                     fontWeight: 600,
                     fontSize: { xs: '0.9rem', lg: '1.2rem' },
                     maxWidth: '900px',
@@ -537,7 +537,7 @@ const Login = ({ onClose, onSwitchToSignup }) => {
                         InputProps={{
                           style: { 
                             color: premiumColors.white, 
-                            fontFamily: "'Inter', sans-serif", 
+                            fontFamily: "'Playfair Display', serif", 
                             fontWeight: 600 
                           }
                         }}
@@ -584,7 +584,7 @@ const Login = ({ onClose, onSwitchToSignup }) => {
                         InputProps={{
                           style: { 
                             color: premiumColors.white, 
-                            fontFamily: "'Inter', sans-serif", 
+                            fontFamily: "'Playfair Display', serif", 
                             fontWeight: 600 
                           },
                           endAdornment: (
@@ -646,7 +646,7 @@ const Login = ({ onClose, onSwitchToSignup }) => {
                               sx={{
                                 color: premiumColors.goldLight,
                                 fontSize: { xs: '0.9rem', lg: '1rem' },
-                                fontFamily: "'Inter', sans-serif",
+                                fontFamily: "'Playfair Display', serif",
                                 fontWeight: 600,
                               }}
                             >
@@ -674,7 +674,7 @@ const Login = ({ onClose, onSwitchToSignup }) => {
                               sx={{
                                 color: premiumColors.goldLight,
                                 fontSize: { xs: '0.9rem', lg: '1rem' },
-                                fontFamily: "'Inter', sans-serif",
+                                fontFamily: "'Playfair Display', serif",
                                 fontWeight: 600,
                               }}
                             >
@@ -689,7 +689,7 @@ const Login = ({ onClose, onSwitchToSignup }) => {
                         textTransform: 'none',
                         fontSize: { xs: '0.9rem', lg: '1rem' },
                         fontWeight: 700,
-                        fontFamily: "'Inter', sans-serif",
+                        fontFamily: "'Playfair Display', serif",
                         px: 2,
                         py: 1,
                         borderRadius: 2,
@@ -715,7 +715,7 @@ const Login = ({ onClose, onSwitchToSignup }) => {
                         color: premiumColors.noir,
                         py: { xs: 1.8, lg: 2.5 },
                         borderRadius: 3,
-                        fontFamily: "'Inter', sans-serif",
+                        fontFamily: "'Playfair Display', serif",
                         fontWeight: 800,
                         fontSize: { xs: '1rem', lg: '1.2rem' },
                         textTransform: 'none',
@@ -758,7 +758,7 @@ const Login = ({ onClose, onSwitchToSignup }) => {
                     <Box sx={{ textAlign: 'center' }}>
                       <Typography sx={{
                         color: premiumColors.goldLight + 'E0',
-                        fontFamily: "'Inter', sans-serif",
+                        fontFamily: "'Playfair Display', serif",
                         fontSize: { xs: '0.95rem', lg: '1.1rem' },
                         fontWeight: 600,
                         letterSpacing: '0.3px'
@@ -772,7 +772,7 @@ const Login = ({ onClose, onSwitchToSignup }) => {
                             textTransform: 'none',
                             fontWeight: 800,
                             fontSize: { xs: '0.95rem', lg: '1.1rem' },
-                            fontFamily: "'Inter', sans-serif",
+                            fontFamily: "'Playfair Display', serif",
                             p: 0,
                             '&:hover': {
                               color: premiumColors.goldLight,
@@ -829,7 +829,7 @@ const Login = ({ onClose, onSwitchToSignup }) => {
             </Typography>
             <Typography sx={{
               color: premiumColors.goldLight,
-              fontFamily: "'Inter', sans-serif",
+              fontFamily: "'Playfair Display', serif",
               fontSize: '1.1rem',
               fontWeight: 600
             }}>

@@ -122,7 +122,7 @@ const NotFound = () => {
             variant="h4"
             sx={{
               color: premiumColors.white,
-              fontFamily: "'Inter', sans-serif",
+              fontFamily: "'Playfair Display', serif",
               fontWeight: 600,
               mb: 2,
               fontSize: { xs: '1.3rem', lg: '2rem' },
@@ -138,7 +138,7 @@ const NotFound = () => {
             variant="body1"
             sx={{
               color: premiumColors.goldLight + 'CC',
-              fontFamily: "'Inter', sans-serif",
+              fontFamily: "'Playfair Display', serif",
               fontSize: { xs: '1rem', lg: '1.3rem' },
               mb: 5,
               maxWidth: '600px',
@@ -167,7 +167,7 @@ const NotFound = () => {
                 px: { xs: 4, lg: 6 },
                 py: { xs: 2, lg: 2.5 },
                 borderRadius: 3,
-                fontFamily: "'Inter', sans-serif",
+                fontFamily: "'Playfair Display', serif",
                 fontWeight: 700,
                 fontSize: { xs: '1rem', lg: '1.2rem' },
                 textTransform: 'none',
@@ -192,7 +192,7 @@ const NotFound = () => {
                 px: { xs: 4, lg: 6 },
                 py: { xs: 2, lg: 2.5 },
                 borderRadius: 3,
-                fontFamily: "'Inter', sans-serif",
+                fontFamily: "'Playfair Display', serif",
                 fontWeight: 600,
                 fontSize: { xs: '1rem', lg: '1.2rem' },
                 textTransform: 'none',

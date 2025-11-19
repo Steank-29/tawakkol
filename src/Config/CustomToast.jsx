@@ -20,7 +20,7 @@ const CustomToast = ({ type, fullName, message, onDismiss }) => {
         backdropFilter: 'blur(20px)',
         boxShadow: `0 8px 32px ${premiumColors.gold}20`,
         maxWidth: 400,
-        fontFamily: "'Inter', sans-serif",
+        fontFamily: "'Playfair Display', serif",
       }}
     >
       {/* Logo + Title Row */}

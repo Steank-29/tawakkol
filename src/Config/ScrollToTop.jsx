@@ -75,7 +75,7 @@ const ScrollToTop = () => {
                 bgcolor: premiumColors.noir,
                 color: premiumColors.gold,
                 border: `1px solid ${premiumColors.gold}40`,
-                fontFamily: "'Inter', sans-serif",
+                fontFamily: "'Playfair Display', serif",
                 fontWeight: 500,
                 fontSize: '0.8rem',
                 borderRadius: 2,

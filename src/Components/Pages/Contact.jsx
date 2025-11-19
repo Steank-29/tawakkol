@@ -13,7 +13,12 @@ import {
   Backdrop,
   CircularProgress,
   InputAdornment,
-  Tooltip
+  Tooltip,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Chip
 } from '@mui/material';
 import {
   Close,
@@ -25,7 +30,11 @@ import {
   Error as ErrorIcon,
   Security,
   Phone,
-  Email
+  Email,
+  PriorityHigh,
+  Schedule,
+  Whatshot,
+  Warning
 } from '@mui/icons-material';
 import { toast, Toaster } from 'sonner';
 
@@ -39,6 +48,8 @@ const premiumColors = {
   white: '#ffffff',
   error: '#ff4757',
   success: '#2ed573',
+  warning: '#ffa502',
+  urgent: '#ff3838',
   premiumGradient: 'linear-gradient(135deg, #d4af37 0%, #f9d423 50%, #d4af37 100%)'
 };
 
@@ -59,9 +70,46 @@ const glassStyle = {
   position: 'relative'
 };
 
+// === IMPORTANCE LEVEL CONFIG ===
+const importanceLevels = [
+  {
+    value: 'low',
+    label: 'Faible Priorité',
+    description: 'Question générale ou information',
+    color: premiumColors.success,
+    icon: <Schedule />,
+    chipColor: 'success'
+  },
+  {
+    value: 'medium',
+    label: 'Priorité Moyenne',
+    description: 'Problème standard à résoudre',
+    color: premiumColors.warning,
+    icon: <PriorityHigh />,
+    chipColor: 'warning'
+  },
+  {
+    value: 'high',
+    label: 'Haute Priorité',
+    description: 'Besoin urgent de réponse',
+    color: premiumColors.gold,
+    icon: <Warning />,
+    chipColor: 'warning'
+  },
+  {
+    value: 'urgent',
+    label: 'Urgent',
+    description: 'Problème critique nécessitant une attention immédiate',
+    color: premiumColors.urgent,
+    icon: <Whatshot />,
+    chipColor: 'error'
+  }
+];
+
 // === ENHANCED CUSTOM TOAST COMPONENT ===
-const CustomToast = ({ type, fullName, message, onDismiss, progress }) => {
+const CustomToast = ({ type, fullName, message, importance, onDismiss, progress }) => {
   const isSuccess = type === 'success';
+  const importanceConfig = importanceLevels.find(level => level.value === importance) || importanceLevels[1];
 
   return (
     <Box
@@ -76,7 +124,7 @@ const CustomToast = ({ type, fullName, message, onDismiss, progress }) => {
         backdropFilter: 'blur(25px)',
         boxShadow: `0 12px 40px ${isSuccess ? premiumColors.success + '25' : premiumColors.error + '25'}`,
         maxWidth: 450,
-        fontFamily: "'Inter', sans-serif",
+        fontFamily: "'Fjalla One', sans-serif",
         position: 'relative',
         overflow: 'hidden',
         '&::before': {
@@ -115,6 +163,7 @@ const CustomToast = ({ type, fullName, message, onDismiss, progress }) => {
             fontWeight: 800,
             letterSpacing: '1px',
             textTransform: 'uppercase',
+            fontFamily: "'Fjalla One', sans-serif",
           }}
         >
           Tawakkol
@@ -132,10 +181,23 @@ const CustomToast = ({ type, fullName, message, onDismiss, progress }) => {
               overflow: 'hidden',
               textOverflow: 'ellipsis',
               whiteSpace: 'nowrap',
+              fontFamily: "'Fjalla One', sans-serif",
             }}
           >
             {fullName}
           </Typography>
+          <Chip
+            icon={importanceConfig.icon}
+            label={importanceConfig.label}
+            size="small"
+            color={importanceConfig.chipColor}
+            sx={{ 
+              height: 20,
+              fontSize: '0.7rem',
+              fontFamily: "'Fjalla One', sans-serif",
+              '& .MuiChip-icon': { fontSize: '0.9rem' }
+            }}
+          />
         </Box>
         <Typography
           sx={{
@@ -146,6 +208,7 @@ const CustomToast = ({ type, fullName, message, onDismiss, progress }) => {
             display: '-webkit-box',
             WebkitLineClamp: 3,
             WebkitBoxOrient: 'vertical',
+            fontFamily: "'Fjalla One', sans-serif",
           }}
         >
           {message}
@@ -199,6 +262,7 @@ const Contact = ({ onClose }) => {
     fullName: '',
     email: '',
     phone: '',
+    importance: 'medium',
     issue: '',
     file: null
   });
@@ -300,6 +364,7 @@ const Contact = ({ onClose }) => {
           <CustomToast
             type="success"
             fullName={formData.fullName}
+            importance={formData.importance}
             message="Votre message a été envoyé avec succès! Nous vous répondrons dans les plus brefs délais."
             onDismiss={() => toast.dismiss(t)}
             progress={{ duration: 5000 }}
@@ -313,7 +378,7 @@ const Contact = ({ onClose }) => {
       );
 
       // Reset form
-      setFormData({ fullName: '', email: '', phone: '', issue: '', file: null });
+      setFormData({ fullName: '', email: '', phone: '', importance: 'medium', issue: '', file: null });
       setFileName('');
       
     } catch (err) {
@@ -325,6 +390,11 @@ const Contact = ({ onClose }) => {
 
   const triggerFileInput = () => {
     fileInputRef.current?.click();
+  };
+
+  const getImportanceColor = () => {
+    const level = importanceLevels.find(l => l.value === formData.importance);
+    return level ? level.color : premiumColors.gold;
   };
 
   return (
@@ -346,7 +416,7 @@ const Contact = ({ onClose }) => {
       />
 
       <Box sx={{
-        width: '100vw',
+        width: '99vw',
         minHeight: '100vh',
         background: `linear-gradient(135deg, ${premiumColors.charcoal} 0%, ${premiumColors.noir} 50%, ${premiumColors.charcoal} 100%)`,
         position: 'relative',
@@ -457,7 +527,7 @@ const Contact = ({ onClose }) => {
                 <Typography
                   variant="h1"
                   sx={{
-                    fontFamily: "'Playfair Display', serif",
+                    fontFamily: "'Fjalla One', sans-serif",
                     fontWeight: 900,
                     background: premiumColors.noir,
                     backgroundClip: 'text',
@@ -477,7 +547,7 @@ const Contact = ({ onClose }) => {
                   variant="h5"
                   sx={{
                     color: premiumColors.noir + 'F0',
-                    fontFamily: "'Inter', sans-serif",
+                    fontFamily: "'Fjalla One', sans-serif",
                     fontWeight: 600,
                     fontSize: { xs: '1rem', lg: '1.3rem' },
                     maxWidth: '800px',
@@ -556,6 +626,86 @@ const Contact = ({ onClose }) => {
                         }}
                       />
 
+                      {/* Importance Level Selector */}
+                      <FormControl fullWidth sx={selectStyle}>
+                        <InputLabel 
+                          sx={{ 
+                            color: premiumColors.goldLight + 'C0',
+                            fontFamily: "'Fjalla One', sans-serif",
+                            fontWeight: 600,
+                            '&.Mui-focused': { 
+                              color: getImportanceColor(),
+                              fontWeight: 800
+                            }
+                          }}
+                        >
+                          Niveau d'Importance
+                        </InputLabel>
+                        <Select
+                          value={formData.importance}
+                          onChange={handleChange('importance')}
+                          label="Niveau d'Importance"
+                          sx={{
+                            color: premiumColors.white,
+                            fontFamily: "'Fjalla One', sans-serif",
+                            fontWeight: 600,
+                            height: { xs: 56, lg: 64 },
+                            borderRadius: 3,
+                            '& .MuiOutlinedInput-notchedOutline': {
+                              borderColor: premiumColors.gold + '80',
+                              borderWidth: 2
+                            },
+                            '&:hover .MuiOutlinedInput-notchedOutline': {
+                              borderColor: getImportanceColor(),
+                            },
+                            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                              borderColor: getImportanceColor(),
+                              boxShadow: `0 0 0 3px ${getImportanceColor()}40`
+                            }
+                          }}
+                          renderValue={(value) => {
+                            const level = importanceLevels.find(l => l.value === value);
+                            return (
+                              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                                {level.icon}
+                                <Typography sx={{ 
+                                  fontFamily: "'Fjalla One', sans-serif",
+                                  fontWeight: 700,
+                                  color: level.color
+                                }}>
+                                  {level.label}
+                                </Typography>
+                              </Box>
+                            );
+                          }}
+                        >
+                          {importanceLevels.map((level) => (
+                            <MenuItem key={level.value} value={level.value} sx={menuItemStyle}>
+                              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, width: '100%' }}>
+                                <Box sx={{ color: level.color }}>{level.icon}</Box>
+                                <Box>
+                                  <Typography sx={{ 
+                                    fontFamily: "'Fjalla One', sans-serif",
+                                    fontWeight: 700,
+                                    color: premiumColors.white
+                                  }}>
+                                    {level.label}
+                                  </Typography>
+                                  <Typography sx={{ 
+                                    fontFamily: "'Fjalla One', sans-serif",
+                                    fontSize: '0.8rem',
+                                    color: premiumColors.goldLight + '80',
+                                    mt: 0.5
+                                  }}>
+                                    {level.description}
+                                  </Typography>
+                                </Box>
+                              </Box>
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </FormControl>
+
                       <TextField
                         fullWidth
                         label="Décrivez votre problème"
@@ -621,7 +771,7 @@ const Contact = ({ onClose }) => {
                         }} />
                         <Typography sx={{
                           color: premiumColors.goldLight,
-                          fontFamily: "'Inter', sans-serif",
+                          fontFamily: "'Fjalla One', sans-serif",
                           fontSize: { xs: '1.1rem', lg: '1.2rem' },
                           fontWeight: 700,
                           mb: 1
@@ -631,7 +781,7 @@ const Contact = ({ onClose }) => {
                         <Typography sx={{
                           color: premiumColors.goldLight + '80',
                           fontSize: '0.9rem',
-                          fontFamily: "'Inter', sans-serif",
+                          fontFamily: "'Fjalla One', sans-serif",
                         }}>
                           Supports: PDF, JPG, PNG • Max: 10MB
                         </Typography>
@@ -656,7 +806,7 @@ const Contact = ({ onClose }) => {
                         color: premiumColors.noir,
                         py: { xs: 2, lg: 3 },
                         borderRadius: 4,
-                        fontFamily: "'Inter', sans-serif",
+                        fontFamily: "'Fjalla One', sans-serif",
                         fontWeight: 800,
                         fontSize: { xs: '1.1rem', lg: '1.3rem' },
                         textTransform: 'none',
@@ -720,7 +870,7 @@ const Contact = ({ onClose }) => {
                       <Box>
                         <Typography sx={{
                           color: premiumColors.goldLight,
-                          fontFamily: "'Inter', sans-serif",
+                          fontFamily: "'Fjalla One', sans-serif",
                           fontSize: '1rem',
                           fontWeight: 600,
                           mb: 1
@@ -735,7 +885,7 @@ const Contact = ({ onClose }) => {
                             textTransform: 'none',
                             fontWeight: 700,
                             fontSize: '1.1rem',
-                            fontFamily: "'Inter', sans-serif",
+                            fontFamily: "'Fjalla One', sans-serif",
                             p: 1,
                             borderRadius: 2,
                             '&:hover': {
@@ -752,7 +902,7 @@ const Contact = ({ onClose }) => {
                       <Box>
                         <Typography sx={{
                           color: premiumColors.goldLight,
-                          fontFamily: "'Inter', sans-serif",
+                          fontFamily: "'Fjalla One', sans-serif",
                           fontSize: '1rem',
                           fontWeight: 600,
                           mb: 1
@@ -767,7 +917,7 @@ const Contact = ({ onClose }) => {
                             textTransform: 'none',
                             fontWeight: 700,
                             fontSize: '1.1rem',
-                            fontFamily: "'Inter', sans-serif",
+                            fontFamily: "'Fjalla One', sans-serif",
                             p: 1,
                             borderRadius: 2,
                             '&:hover': {
@@ -815,7 +965,7 @@ const Contact = ({ onClose }) => {
               backgroundClip: 'text',
               WebkitBackgroundClip: 'text',
               color: 'transparent',
-              fontFamily: "'Playfair Display', serif",
+              fontFamily: "'Fjalla One', sans-serif",
               fontSize: { xs: '1.5rem', lg: '2rem' },
               fontWeight: 700,
               letterSpacing: '1px',
@@ -825,7 +975,7 @@ const Contact = ({ onClose }) => {
             </Typography>
             <Typography sx={{
               color: premiumColors.goldLight,
-              fontFamily: "'Inter', sans-serif",
+              fontFamily: "'Fjalla One', sans-serif",
               fontSize: '1.1rem',
               fontWeight: 600
             }}>
@@ -836,6 +986,8 @@ const Contact = ({ onClose }) => {
       </Box>
 
       <style jsx global>{`
+        @import url('https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap');
+        
         @keyframes shrinkWidth {
           from { width: 100%; }
           to { width: 0%; }
@@ -870,6 +1022,7 @@ const inputStyle = {
     color: premiumColors.goldLight + 'C0',
     fontSize: { xs: '1rem', lg: '1.1rem' },
     fontWeight: 600,
+    fontFamily: "'Fjalla One', sans-serif",
     '&.Mui-focused': { 
       color: premiumColors.gold,
       fontWeight: 800
@@ -879,14 +1032,39 @@ const inputStyle = {
     color: premiumColors.error,
     fontWeight: 600,
     fontSize: '0.85rem',
-    marginLeft: 0
+    marginLeft: 0,
+    fontFamily: "'Fjalla One', sans-serif",
+  }
+};
+
+const selectStyle = {
+  '& .MuiOutlinedInput-root': {
+    borderRadius: 3,
+    transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+  }
+};
+
+const menuItemStyle = {
+  fontFamily: "'Fjalla One', sans-serif",
+  background: `linear-gradient(135deg, ${premiumColors.charcoal} 0%, ${premiumColors.noir} 100%)`,
+  margin: '4px 8px',
+  borderRadius: 2,
+  '&:hover': {
+    background: `linear-gradient(135deg, ${premiumColors.charcoal} 0%, ${premiumColors.noir} 100%)`,
+  },
+  '&.Mui-selected': {
+    background: `linear-gradient(135deg, ${premiumColors.charcoal} 0%, ${premiumColors.noir} 100%)`,
+    border: `1px solid ${premiumColors.gold}40`,
+  },
+  '&.Mui-selected:hover': {
+    background: `linear-gradient(135deg, ${premiumColors.charcoal} 0%, ${premiumColors.noir} 100%)`,
   }
 };
 
 const inputProps = {
   style: { 
     color: premiumColors.white, 
-    fontFamily: "'Inter', sans-serif", 
+    fontFamily: "'Fjalla One', sans-serif", 
     fontWeight: 600 
   }
 };
