@@ -23,7 +23,13 @@ import {
   ArrowForward,
 } from '@mui/icons-material';
 import { motion } from 'framer-motion';
-import HomeV from '../../assets/Home_video.mp4'
+import Carousel from 'react-multi-carousel';
+import 'react-multi-carousel/lib/styles.css';
+import HomeV from '../../assets/Home_video.mp4';
+import casual from '../../assets/slider/casual.jpg';
+import official from '../../assets/slider/official.jpg';
+import sport from '../../assets/slider/sport.jpg';
+import religious from '../../assets/slider/religious.jpg';
 
 // === PALETTE DE COULEURS PREMIUM ===
 const premiumColors = {
@@ -43,6 +49,34 @@ const Home = () => {
   const videoRef = useRef(null);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+
+  // Images for carousel
+  const carouselImages = [
+    { src: casual, title: 'Style Décontracté', subtitle: 'Élégance au quotidien' },
+    { src: official, title: 'Tenue Officielle', subtitle: 'Sophistication et prestige' },
+    { src: sport, title: 'Sport & Performance', subtitle: 'Performance et style' },
+    { src: religious, title: 'Spiritualité', subtitle: 'Élégance sacrée' }
+  ];
+
+  // Carousel configuration
+  const responsive = {
+    superLargeDesktop: {
+      breakpoint: { max: 4000, min: 3000 },
+      items: 3
+    },
+    desktop: {
+      breakpoint: { max: 3000, min: 1024 },
+      items: 3
+    },
+    tablet: {
+      breakpoint: { max: 1024, min: 464 },
+      items: 2
+    },
+    mobile: {
+      breakpoint: { max: 464, min: 0 },
+      items: 1
+    }
+  };
 
   // Contrôle de la vidéo
   useEffect(() => {
@@ -65,11 +99,14 @@ const Home = () => {
   };
 
   return (
-    <Box sx={{ width: '100vw', height: '90vh', background: premiumColors.darkGradient }}>
+    <Box sx={{ width: '99vw', background: premiumColors.darkGradient }}>
+      {/* === CAROUSEL SECTION === */}
+
+
       {/* === HÉRO AVEC VIDÉO PLEINE LARGEUR === */}
       <Box sx={{ 
         position: 'relative', 
-        width: '100vw', 
+        width: '99vw', 
         height: '90vh',
         left: '50%', 
         right: '50%', 
@@ -310,10 +347,229 @@ const Home = () => {
         </Box>
       </Box>
 
+            <Box sx={{ 
+        position: 'relative', 
+        width: '99vw',
+        left: '50%', 
+        right: '50%', 
+        marginLeft: '-50vw', 
+        marginRight: '-50vw',
+        py: 8,
+        background: `linear-gradient(180deg, ${premiumColors.charcoal} 0%, ${premiumColors.noir} 100%)`
+      }}>
+        <Container maxWidth="xl">
+          {/* Animated Title */}
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          >
+            <Typography
+              variant="h2"
+              sx={{
+                fontFamily: "'Playfair Display', serif",
+                fontWeight: 700,
+                fontSize: { xs: '2.5rem', md: '3.5rem' },
+                background: premiumColors.premiumGradient,
+                backgroundClip: 'text',
+                WebkitBackgroundClip: 'text',
+                color: 'transparent',
+                textAlign: 'center',
+                mb: 2,
+                textShadow: `0 5px 15px ${premiumColors.gold}20`
+              }}
+            >
+              Collections Exclusives
+            </Typography>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+          >
+            <Typography
+              variant="h6"
+              sx={{
+                color: premiumColors.goldLight,
+                textAlign: 'center',
+                mb: 6,
+                maxWidth: '600px',
+                margin: '0 auto',
+                fontSize: { xs: '1rem', md: '1.2rem' },
+                opacity: 0.9
+              }}
+            >
+              Découvrez nos univers soigneusement sélectionnés pour chaque occasion
+            </Typography>
+          </motion.div>
+
+          {/* Carousel */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 0.6 }}
+          >
+            <Carousel
+              responsive={responsive}
+              infinite={true}
+              autoPlay={true}
+              autoPlaySpeed={3000}
+              keyBoardControl={true}
+              customTransition="transform 600ms ease-in-out"
+              transitionDuration={600}
+              containerClass="carousel-container"
+              itemClass="carousel-item-padding-40-px"
+              removeArrowOnDeviceType={['mobile']}
+              dotListClass="custom-dot-list-style"
+              showDots={true}
+              arrows={!isMobile}
+              renderDotsOutside={true}
+              swipeable={true}
+              draggable={true}
+            >
+              {carouselImages.map((item, index) => (
+                <motion.div
+                  key={index}
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                >
+                  <Box
+                    sx={{
+                      position: 'relative',
+                      height: { xs: 300, md: 400 },
+                      margin: 2,
+                      borderRadius: 4,
+                      overflow: 'hidden',
+                      boxShadow: `0 20px 40px ${premiumColors.gold}20`,
+                      border: `1px solid ${premiumColors.gold}30`,
+                      '&:hover': {
+                        boxShadow: `0 25px 50px ${premiumColors.gold}30`,
+                        '& .carousel-overlay': {
+                          opacity: 1,
+                          background: `linear-gradient(0deg, ${premiumColors.noir}CC 0%, ${premiumColors.noir}00 100%)`
+                        },
+                        '& .carousel-content': {
+                          transform: 'translateY(0)',
+                          opacity: 1
+                        }
+                      },
+                      transition: 'all 0.4s ease-in-out'
+                    }}
+                  >
+                    <img
+                      src={item.src}
+                      alt={item.title}
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                        display: 'block'
+                      }}
+                    />
+                    
+                    {/* Overlay */}
+                    <Box 
+                      className="carousel-overlay"
+                      sx={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        height: '100%',
+                        background: `linear-gradient(0deg, ${premiumColors.noir}99 0%, ${premiumColors.noir}00 50%)`,
+                        opacity: 0.7,
+                        transition: 'all 0.4s ease-in-out'
+                      }}
+                    />
+                    
+                    {/* Content */}
+                    <Box 
+                      className="carousel-content"
+                      sx={{
+                        position: 'absolute',
+                        bottom: 0,
+                        left: 0,
+                        width: '100%',
+                        padding: 4,
+                        transform: 'translateY(20px)',
+                        opacity: 0.8,
+                        transition: 'all 0.4s ease-in-out'
+                      }}
+                    >
+                      <Typography
+                        variant="h5"
+                        sx={{
+                          color: premiumColors.white,
+                          fontFamily: "'Playfair Display', serif",
+                          fontWeight: 700,
+                          fontSize: { xs: '1.5rem', md: '1.8rem' },
+                          mb: 1
+                        }}
+                      >
+                        {item.title}
+                      </Typography>
+                      <Typography
+                        variant="body1"
+                        sx={{
+                          color: premiumColors.goldLight,
+                          fontFamily: "'Playfair Display', serif",
+                          fontSize: { xs: '0.9rem', md: '1rem' },
+                          opacity: 0.9
+                        }}
+                      >
+                        {item.subtitle}
+                      </Typography>
+                    </Box>
+                  </Box>
+                </motion.div>
+              ))}
+            </Carousel>
+          </motion.div>
+        </Container>
+      </Box>
+
       <style jsx global>{`
         @keyframes float {
           0%, 100% { transform: translateY(0px); }
           50% { transform: translateY(-20px); }
+        }
+        
+        .carousel-container {
+          position: relative;
+        }
+        
+        .carousel-item-padding-40-px {
+          padding: 10px;
+        }
+        
+        .custom-dot-list-style {
+          margin-top: 20px;
+        }
+        
+        .react-multi-carousel-dot button {
+          border: 2px solid ${premiumColors.gold};
+          background: transparent;
+          width: 12px;
+          height: 12px;
+        }
+        
+        .react-multi-carousel-dot--active button {
+          background: ${premiumColors.gold};
+        }
+        
+        .react-multiple-carousel__arrow {
+          background: ${premiumColors.gold};
+          border: 2px solid ${premiumColors.goldDark};
+        }
+        
+        .react-multiple-carousel__arrow:hover {
+          background: ${premiumColors.goldDark};
+        }
+        
+        .react-multiple-carousel__arrow::before {
+          color: ${premiumColors.noir};
+          font-weight: bold;
         }
       `}</style>
     </Box>
