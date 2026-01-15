@@ -27,7 +27,7 @@ import {
   Instagram,
   Close,
   ExpandMore,
-  Diamond,
+  SportsScore,
   Watch,
   Style,
   Spa,
@@ -425,47 +425,48 @@ const Navbar = () => {
 
   const categories = [
     {
-      title: 'Joaillerie',
-      icon: <Diamond sx={{ fontSize: 18, color: premiumColors.gold }} />,
+      title: 'Sport',
+      icon: <SportsScore sx={{ fontSize: 18, color: premiumColors.gold }} />,
       items: [
-        { name: 'Colliers Signature', path: '/colliers', featured: true },
-        { name: 'Bracelets Élégance', path: '/bracelets' },
-        { name: 'Bagues Prestige', path: '/bagues' },
-        { name: 'Boucles d\'Oreilles', path: '/boucles-oreilles' },
-        { name: 'Broches Anciennes', path: '/broches' }
+        { name: 'T-shirt', path: '/sport', },
+        { name: 'Workout Hoodie', path: '/sport', featured: true  },
+        { name: 'Jersey', path: '/sport' },
+        { name: 'Long Sleeve Shirt', path: '/sport' },
+        { name: 'Cropped Pants', path: '/sport' },
+        { name: 'Sleeveless T-Shirt', path: '/sport' },
+        { name: 'Sport Pants', path: '/sport' },
       ]
     },
     {
-      title: 'Montres',
+      title: 'Streetwear',
       icon: <Watch sx={{ fontSize: 18, color: premiumColors.gold }} />,
       items: [
-        { name: 'Collection Héritage', path: '/heritage', featured: true },
-        { name: 'Édition Limitée', path: '/edition-limitee' },
-        { name: 'Montres Sport', path: '/montres-sport' },
-        { name: 'Pièces Uniques', path: '/pieces-uniques' },
-        { name: 'Montres Connectées', path: '/montres-connectees' }
+        { name: 'Hoodies', path: '/streetwear', },
+        { name: 'Long Sleeve Shirt', path: '/streetwear' },
+        { name: 'Zipper Shirt', path: '/streetwear' },
+        { name: 'Cargo Pants', path: '/streetwear',featured: true  },
+        { name: 'Baggy Pants', path: '/streetwear' },
+        { name: 'Oversized T-Shirts', path: '/streetwear' },
+        { name: 'Normal Pants', path: '/streetwear' },
       ]
     },
     {
-      title: 'Accessoires',
+      title: 'Religious Wear',
       icon: <Style sx={{ fontSize: 18, color: premiumColors.gold }} />,
       items: [
-        { name: 'Ceintures Cuir', path: '/ceintures' },
-        { name: 'Lunettes Soleil', path: '/lunettes' },
-        { name: 'Écharpes Soie', path: '/echarpes' },
-        { name: 'Portefeuilles', path: '/portefeuilles' },
-        { name: 'Bijoux de Poche', path: '/bijoux-poche' }
+        { name: 'Qamiss', path: '/religious', featured: true  },
+        { name: 'Qachabeeya', path: '/religious' },
+        { name: 'Qamiss & Pants', path: '/religious' },
       ]
     },
     {
-      title: 'Art de Vivre',
+      title: 'Casual',
       icon: <Spa sx={{ fontSize: 18, color: premiumColors.gold }} />,
       items: [
-        { name: 'Parfums Exclusifs', path: '/parfums' },
-        { name: 'Décoration Maison', path: '/decoration' },
-        { name: 'Art de la Table', path: '/art-table' },
-        { name: 'Cadeaux Prestige', path: '/cadeaux' },
-        { name: 'Accessoires Bar', path: '/accessoires-bar' }
+        { name: 'Sweater', path: '/casual' },
+        { name: 'Jacket', path: '/decorcasualation' },
+        { name: 'Pants', path: '/art-casual' },
+        { name: 'Coats', path: '/casual', featured: true  },
       ]
     }
   ];
