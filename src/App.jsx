@@ -7,6 +7,7 @@ import Home from './Components/Pages/Home';
 import Contact from './Components/Pages/Contact'; 
 import Layout from './Config/Layout';
 import NotFound from './Config/Notfound';
+import Sport from './Components/Links/Sport';
 
 function App() {
   const router = createBrowserRouter([
@@ -39,6 +40,14 @@ function App() {
       element: (
         <Layout>
           <Login />
+        </Layout>
+      )
+    },
+    {
+      path: '/sport',
+      element: (
+        <Layout>
+          <Sport />
         </Layout>
       )
     },
