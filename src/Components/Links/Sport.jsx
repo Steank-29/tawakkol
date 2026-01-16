@@ -142,7 +142,7 @@ export default function Sport() {
             bottom: 0,
             background: `
               linear-gradient(90deg, ${colors.black} 0%, transparent 30%, transparent 100%),
-              linear-gradient(180deg, ${colors.black} 0%, transparent 20%, transparent 100%)
+              linear-gradient(180deg, ${colors.black} 0%, transparent 60%, transparent 100%)
             `,
             zIndex: 2,
           }}
@@ -832,16 +832,17 @@ export default function Sport() {
               endIcon={<ArrowForward />}
               sx={{
                 borderColor: colors.gold,
-                color: colors.gold,
+                color: colors.black,
                 px: 5,
                 py: 1.5,
                 borderRadius: 2,
                 fontSize: '1rem',
                 fontWeight: 600,
+                background: colors.gradientGold,
                 borderWidth: 2,
                 '&:hover': {
-                  borderColor: colors.goldSoft,
-                  background: alpha(colors.gold, 0.08),
+                  borderColor: colors.gold,
+                  background: colors.gradientGold,
                   borderWidth: 2,
                 },
               }}
