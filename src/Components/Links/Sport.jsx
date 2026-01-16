@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import {
   Box,
   Container,
@@ -20,9 +20,14 @@ import {
   TrendingUp,
   CheckCircle
 } from '@mui/icons-material';
-import { motion } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
 
 import heroImage from '../../assets/sport.png';
+import jerseyImage from '../../assets/jersey.png';
+import shortImage from '../../assets/short.png';
+import sleevelessImage from '../../assets/sleeveless.png';
+import hoodieImage from '../../assets/hoodie.png';
+import pantsImage from '../../assets/pants.png';
 
 /* =======================
    DESIGN TOKENS
@@ -55,17 +60,59 @@ const features = [
   'Paiement sécurisé'
 ];
 
+const gridItems = [
+  {
+    id: 'a',
+    title: 'T-SHIRTS',
+    image: jerseyImage,
+    link: '/details/tshirts',
+    tag: 'Performance'
+  },
+  {
+    id: 'b',
+    title: 'SHORTS',
+    image: shortImage,
+    link: '/details/shorts',
+    tag: 'Légèreté'
+  },
+  {
+    id: 'c',
+    title: 'HOODIES',
+    image: hoodieImage,
+    link: '/details/hoodies',
+    tag: 'Confort'
+  },
+  {
+    id: 'd',
+    title: 'SLEEVELESS JERSEYS',
+    image: sleevelessImage,
+    link: '/details/sleeveless-jerseys',
+    tag: 'Flexibilité'
+  },
+  {
+    id: 'e',
+    title: 'PANTS',
+    image: pantsImage,
+    link: '/details/pants',
+    tag: 'Endurance'
+  }
+];
+
 /* =======================
    COMPONENT
 ======================= */
 export default function Sport() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const titleRef = useRef(null);
+  const isTitleInView = useInView(titleRef, { once: true, amount: 0.5 });
+  const gridRef = useRef(null);
+  const isGridInView = useInView(gridRef, { once: true, amount: 0.3 });
 
   return (
     <Box
       sx={{
-        minHeight: '100vh',
+        minHeight: '200vh',
         width: '99vw',
         background: colors.gradientDark,
         color: colors.white,
@@ -444,6 +491,365 @@ export default function Sport() {
           {/* Empty column for spacing - Image is in background */}
           <Grid item xs={12} md={4} />
         </Grid>
+
+        {/* =======================
+           CENTERED TITLE SECTION
+        ======================= */}
+        <Box
+          ref={titleRef}
+          sx={{
+            py: { xs: 8, md: 12 },
+            textAlign: 'center',
+            position: 'relative',
+            overflow: 'hidden',
+          }}
+        >
+          {/* Background glow effect */}
+          <Box
+            sx={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              width: '120%',
+              height: '120%',
+              background: `radial-gradient(circle, ${alpha(colors.gold, 0.05)} 0%, transparent 70%)`,
+              filter: 'blur(60px)',
+            }}
+          />
+
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={isTitleInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+            transition={{ 
+              duration: 0.8, 
+              delay: 0.2,
+              ease: "easeOut"
+            }}
+          >
+            <Chip
+              label="COLLECTIONS EXCLUSIVES"
+              sx={{
+                mb: 3,
+                background: alpha(colors.gold, 0.15),
+                color: colors.gold,
+                fontWeight: 700,
+                fontSize: '0.9rem',
+                py: 1,
+                px: 3,
+                border: `1px solid ${alpha(colors.gold, 0.3)}`,
+              }}
+            />
+
+            <Typography
+              variant="h2"
+              sx={{
+                fontWeight: 900,
+                fontSize: { 
+                  xs: '2.2rem', 
+                  sm: '2.8rem', 
+                  md: '3.5rem',
+                  lg: '4rem' 
+                },
+                lineHeight: 1.1,
+                mb: 2,
+                background: `linear-gradient(90deg, ${colors.white}, ${colors.gold})`,
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+              }}
+            >
+              VÊTEMENTS DE
+              <Box
+                component="span"
+                sx={{
+                  display: 'block',
+                  background: colors.gradientGold,
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                }}
+              >
+                PERFORMANCE
+              </Box>
+            </Typography>
+
+            <Typography
+              sx={{
+                opacity: 0.8,
+                fontSize: { xs: '1rem', md: '1.1rem' },
+                maxWidth: 600,
+                mx: 'auto',
+                mb: 4,
+              }}
+            >
+              Découvrez nos collections premium conçues pour les athlètes qui repoussent leurs limites
+            </Typography>
+          </motion.div>
+        </Box>
+
+        {/* =======================
+           GRID SECTION WITH ENHANCED CARDS
+        ======================= */}
+        <Box
+          ref={gridRef}
+          sx={{
+            width: '100%',
+            pb: { xs: 8, md: 12 },
+          }}
+        >
+          <Box
+            sx={{
+              display: 'grid',
+              gap: 2,
+              gridTemplateColumns: {
+                xs: '1fr',
+                md: 'repeat(3, 1fr)',
+              },
+              gridTemplateRows: {
+                xs: 'repeat(5, minmax(200px, 1fr))',
+                md: 'repeat(3, minmax(250px, 1fr))',
+              },
+              gridTemplateAreas: {
+                xs: `
+                  "a"
+                  "b"
+                  "c"
+                  "d"
+                  "e"
+                `,
+                md: `
+                  "a c e"
+                  "b c e"
+                  "b d e"
+                `,
+              },
+            }}
+          >
+            {gridItems.map((item, index) => (
+              <motion.div
+                key={item.id}
+                initial={{ opacity: 0, y: 30, scale: 0.95 }}
+                animate={isGridInView ? { 
+                  opacity: 1, 
+                  y: 0, 
+                  scale: 1 
+                } : { 
+                  opacity: 0, 
+                  y: 30, 
+                  scale: 0.95 
+                }}
+                transition={{ 
+                  duration: 0.6, 
+                  delay: index * 0.1,
+                  ease: "easeOut"
+                }}
+                style={{
+                  gridArea: item.id,
+                }}
+              >
+                <Box
+                  component={motion.div}
+                  whileHover={{ 
+                    scale: 1.02,
+                    boxShadow: `0 30px 80px ${alpha(colors.gold, 0.3)}`
+                  }}
+                  transition={{ duration: 0.4 }}
+                  sx={{
+                    position: 'relative',
+                    height: '100%',
+                    borderRadius: 3,
+                    overflow: 'hidden',
+                    cursor: 'pointer',
+                    backgroundImage: `url(${item.image})`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    boxShadow: `
+                      0 20px 60px ${alpha(colors.black, 0.8)},
+                      0 5px 15px ${alpha(colors.black, 0.4)},
+                      inset 0 0 0 1px ${alpha(colors.gold, 0.1)}
+                    `,
+                    '&::before': {
+                      content: '""',
+                      position: 'absolute',
+                      inset: 0,
+                      background: `
+                        linear-gradient(
+                          180deg,
+                          rgba(0,0,0,0.1) 0%,
+                          rgba(0,0,0,0.9) 100%
+                        )
+                      `,
+                      transition: '0.4s',
+                    },
+                    '&::after': {
+                      content: '""',
+                      position: 'absolute',
+                      inset: 0,
+                      background: colors.gradientGold,
+                      opacity: 0,
+                      transition: '0.4s',
+                      mixBlendMode: 'overlay',
+                    },
+                    '&:hover::before': {
+                      background: `
+                        linear-gradient(
+                          180deg,
+                          rgba(0,0,0,0.05) 0%,
+                          rgba(0,0,0,0.95) 100%
+                        )
+                      `,
+                    },
+                    '&:hover::after': {
+                      opacity: 0.1,
+                    },
+                  }}
+                >
+                  {/* Tag Badge */}
+                  <Box
+                    sx={{
+                      position: 'absolute',
+                      top: 16,
+                      left: 16,
+                      zIndex: 3,
+                    }}
+                  >
+                    <Chip
+                      label={item.tag}
+                      size="small"
+                      sx={{
+                        background: alpha(colors.gold, 0.9),
+                        color: colors.black,
+                        fontWeight: 700,
+                        fontSize: '0.7rem',
+                        backdropFilter: 'blur(10px)',
+                      }}
+                    />
+                  </Box>
+
+                  {/* Gradient Overlay */}
+                  <Box
+                    sx={{
+                      position: 'absolute',
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                      height: '60%',
+                      background: `linear-gradient(180deg, transparent 0%, ${alpha(colors.black, 0.9)} 100%)`,
+                      zIndex: 2,
+                    }}
+                  />
+
+                  {/* CENTER CONTENT */}
+                  <Box
+                    sx={{
+                      position: 'absolute',
+                      inset: 0,
+                      zIndex: 3,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flexDirection: 'column',
+                      textAlign: 'center',
+                      px: 2,
+                    }}
+                  >
+                    <Typography
+                      component={motion.div}
+                      whileHover={{ scale: 1.05 }}
+                      sx={{
+                        fontSize: { xs: '1.5rem', md: '1.8rem' },
+                        fontWeight: 900,
+                        color: colors.white,
+                        mb: 3,
+                        letterSpacing: 2,
+                        textShadow: `0 2px 10px ${alpha(colors.black, 0.8)}`,
+                      }}
+                    >
+                      {item.title}
+                    </Typography>
+
+                    <Button
+                      component={motion.button}
+                      whileHover={{ 
+                        scale: 1.1,
+                        boxShadow: `0 15px 40px ${alpha(colors.gold, 0.5)}`
+                      }}
+                      whileTap={{ scale: 0.95 }}
+                      sx={{
+                        background: colors.gradientGold,
+                        color: colors.black,
+                        fontWeight: 800,
+                        px: 4,
+                        py: 1.2,
+                        borderRadius: 2,
+                        fontSize: '0.9rem',
+                        boxShadow: `0 10px 30px ${alpha(colors.gold, 0.4)}`,
+                        '&:hover': {
+                          background: colors.gradientGold,
+                        },
+                      }}
+                      onClick={() => window.location.href = item.link}
+                    >
+                      Explorer
+                    </Button>
+                  </Box>
+
+                  {/* Shine Effect */}
+                  <Box
+                    sx={{
+                      position: 'absolute',
+                      top: 0,
+                      left: '-100%',
+                      width: '100%',
+                      height: '100%',
+                      background: `linear-gradient(90deg, transparent, ${alpha(colors.white, 0.2)}, transparent)`,
+                      zIndex: 2,
+                      transition: '0.6s',
+                    }}
+                    className="shine-effect"
+                  />
+                </Box>
+              </motion.div>
+            ))}
+          </Box>
+
+          {/* View All Button */}
+          <Box
+            sx={{
+              textAlign: 'center',
+              mt: 6,
+            }}
+          >
+            <Button
+              component={motion.button}
+              whileHover={{ 
+                scale: 1.05,
+                boxShadow: `0 20px 50px ${alpha(colors.gold, 0.4)}`
+              }}
+              whileTap={{ scale: 0.95 }}
+              variant="outlined"
+              endIcon={<ArrowForward />}
+              sx={{
+                borderColor: colors.gold,
+                color: colors.gold,
+                px: 5,
+                py: 1.5,
+                borderRadius: 2,
+                fontSize: '1rem',
+                fontWeight: 600,
+                borderWidth: 2,
+                '&:hover': {
+                  borderColor: colors.goldSoft,
+                  background: alpha(colors.gold, 0.08),
+                  borderWidth: 2,
+                },
+              }}
+            >
+              Voir toutes les collections
+            </Button>
+          </Box>
+        </Box>
       </Container>
     </Box>
   );
