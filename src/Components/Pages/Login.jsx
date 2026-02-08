@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Paper,
@@ -7,8 +7,6 @@ import {
   Typography,
   IconButton,
   InputAdornment,
-  Checkbox,
-  FormControlLabel,
   Fade,
   Zoom,
   useTheme,
@@ -28,6 +26,7 @@ import {
   Security
 } from '@mui/icons-material';
 import { toast, Toaster } from 'sonner';
+import { setAuthData } from '../../Config/auth';
 
 const premiumColors = {
   noir: '#1a1a1a',
@@ -187,10 +186,11 @@ const CustomToast = ({ type, email, message, onDismiss, progress }) => {
 
 const Login = ({ onClose, onSwitchToSignup }) => {
   const [showPassword, setShowPassword] = useState(false);
-  const [rememberMeSA, setRememberMeSA] = useState(false);
-  const [rememberMeA, setRememberMeA] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [formData, setFormData] = useState({ email: '', password: '' });
+  const [formData, setFormData] = useState({ 
+    email: '', 
+    password: ''
+  });
   const [errors, setErrors] = useState({});
   const [typingEffect, setTypingEffect] = useState('');
 
@@ -200,7 +200,7 @@ const Login = ({ onClose, onSwitchToSignup }) => {
 
   // Typing effect for header
   useEffect(() => {
-    const text = "Connexion";
+    const text = "Connexion Admin";
     let i = 0;
     const typing = setInterval(() => {
       if (i < text.length) {
@@ -217,50 +217,17 @@ const Login = ({ onClose, onSwitchToSignup }) => {
     e.preventDefault();
     setIsLoading(true);
     
+    // Clear previous errors
+    setErrors({});
+    
+    // Basic validation
     const newErrors = {};
     if (!formData.email) newErrors.email = 'Email requis';
     if (!formData.password) newErrors.password = 'Mot de passe requis';
     
-    setErrors(newErrors);
-    
-    if (!Object.keys(newErrors).length) {
-      try {
-        await new Promise(r => setTimeout(r, 2400));
-        console.log('Login success:', formData);
-        
-        // SUCCESS TOAST
-        toast.custom(
-          (t) => (
-            <CustomToast
-              type="success"
-              email={formData.email}
-              message="Connexion réussie! Bienvenue dans votre espace Tawakkol."
-              onDismiss={() => toast.dismiss(t)}
-              progress={{ duration: 5000 }}
-            />
-          ),
-          { 
-            duration: 5000, 
-            id: 'login-success',
-            position: 'top-center'
-          }
-        );
-        
-      } catch (err) {
-        // ERROR TOAST
-        toast.custom(
-          (t) => (
-            <CustomToast
-              type="error"
-              email={formData.email}
-              message="Échec de la connexion. Veuillez vérifier vos identifiants."
-              onDismiss={() => toast.dismiss(t)}
-            />
-          ),
-          { duration: 6000, id: 'login-error' }
-        );
-      }
-    } else {
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      
       // VALIDATION ERROR TOAST
       toast.custom(
         (t) => (
@@ -273,14 +240,165 @@ const Login = ({ onClose, onSwitchToSignup }) => {
         ),
         { duration: 5000, id: 'login-validation-error' }
       );
+      
+      setIsLoading(false);
+      return;
     }
-    
-    setIsLoading(false);
+
+    try {
+      // Send login request to your backend using proxy
+      const response = await fetch('/api/admin/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        // Use our auth utility to save data properly
+        setAuthData(data.token, data.admin);
+        
+        // Get admin role from backend response
+        const adminRole = data.admin.role;
+        const adminName = data.admin.firstName + ' ' + data.admin.lastName;
+        const adminEmail = data.admin.email;
+        
+        // SUCCESS TOAST - Show role-specific message
+        const welcomeMessage = adminRole === 'super-admin' 
+          ? `Bienvenue Super Admin ${adminName}! Accès complet activé.`
+          : `Bienvenue Admin ${adminName}! Accès à votre espace de gestion.`;
+        
+        toast.custom(
+          (t) => (
+            <CustomToast
+              type="success"
+              email={adminEmail}
+              message={welcomeMessage}
+              onDismiss={() => toast.dismiss(t)}
+              progress={{ duration: 5000 }}
+            />
+          ),
+          { 
+            duration: 5000, 
+            id: 'login-success',
+            position: 'top-center'
+          }
+        );
+        
+        // Redirect based on admin role from backend
+        setTimeout(() => {
+          // Check if there's a redirect URL stored in sessionStorage
+          const redirectAfterLogin = sessionStorage.getItem('redirectAfterLogin');
+          
+          if (redirectAfterLogin) {
+            // Clear the stored redirect URL
+            sessionStorage.removeItem('redirectAfterLogin');
+            window.location.href = redirectAfterLogin;
+          } else {
+            // Default redirect based on role
+            if (adminRole === 'super-admin') {
+              window.location.href = '/Admin-Panel/Creating-New-Product';
+            } else {
+              window.location.href = '/Admin-Panel/Creating-New-Product';
+            }
+          }
+        }, 2000);
+        
+      } else {
+        // Handle different error cases
+        let errorMessage = data.message || 'Échec de la connexion';
+        
+        if (data.message?.includes('Invalid credentials')) {
+          errorMessage = 'Identifiants invalides. Veuillez vérifier votre email et mot de passe.';
+        } else if (data.message?.includes('not authorized')) {
+          errorMessage = 'Accès non autorisé. Contactez le super administrateur.';
+        } else if (data.message?.includes('deactivated')) {
+          errorMessage = 'Votre compte a été désactivé. Veuillez contacter le super administrateur.';
+        } else if (data.message?.includes('not found')) {
+          errorMessage = 'Aucun compte trouvé avec cet email.';
+        } else if (response.status === 500) {
+          errorMessage = 'Erreur serveur. Veuillez réessayer plus tard.';
+        } else if (response.status === 400) {
+          errorMessage = 'Requête invalide. Vérifiez vos informations.';
+        }
+        
+        throw new Error(errorMessage);
+      }
+      
+    } catch (err) {
+      console.error('Login error:', err);
+      
+      // Check if it's a network error
+      let errorMessage = err.message || "Erreur de connexion. Veuillez réessayer.";
+      
+      if (err.message.includes('Failed to fetch')) {
+        errorMessage = 'Impossible de se connecter au serveur. Vérifiez que le backend est en cours d\'exécution.';
+      }
+      
+      // ERROR TOAST
+      toast.custom(
+        (t) => (
+          <CustomToast
+            type="error"
+            email={formData.email}
+            message={errorMessage}
+            onDismiss={() => toast.dismiss(t)}
+          />
+        ),
+        { duration: 6000, id: 'login-error' }
+      );
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleChange = (field) => (e) => {
-    setFormData(prev => ({ ...prev, [field]: e.target.value }));
+    const value = e.target.value;
+    setFormData(prev => ({ ...prev, [field]: value }));
     if (errors[field]) setErrors(prev => ({ ...prev, [field]: '' }));
+  };
+
+  // Pre-fill demo credentials for testing
+  const fillDemoCredentials = (type = 'super-admin') => {
+    if (type === 'super-admin') {
+      setFormData({
+        email: 'superadmin@tawakkol.com',
+        password: 'superadmin123'
+      });
+      toast.custom(
+        (t) => (
+          <CustomToast
+            type="info"
+            email="superadmin@tawakkol.com"
+            message="Super Admin credentials filled. Click 'Se Connecter' to login."
+            onDismiss={() => toast.dismiss(t)}
+          />
+        ),
+        { duration: 4000, id: 'demo-filled' }
+      );
+    } else {
+      setFormData({
+        email: 'admin@tawakkol.com',
+        password: 'admin123'
+      });
+      toast.custom(
+        (t) => (
+          <CustomToast
+            type="info"
+            email="admin@tawakkol.com"
+            message="Admin credentials filled. Click 'Se Connecter' to login."
+            onDismiss={() => toast.dismiss(t)}
+          />
+        ),
+        { duration: 4000, id: 'demo-filled' }
+      );
+    }
   };
 
   return (
@@ -474,7 +592,7 @@ const Login = ({ onClose, onSwitchToSignup }) => {
                     letterSpacing: '0.3px'
                   }}
                 >
-                  Accédez à votre espace exclusif Tawakkol
+                  Accédez à votre espace d'administration Tawakkol
                 </Typography>
               </Box>
 
@@ -499,6 +617,7 @@ const Login = ({ onClose, onSwitchToSignup }) => {
                         onChange={handleChange('email')}
                         error={!!errors.email}
                         helperText={errors.email}
+                        placeholder="admin@tawakkol.com"
                         sx={{
                           '& .MuiOutlinedInput-root': {
                             color: premiumColors.white,
@@ -551,6 +670,7 @@ const Login = ({ onClose, onSwitchToSignup }) => {
                         onChange={handleChange('password')}
                         error={!!errors.password}
                         helperText={errors.password}
+                        placeholder="••••••••"
                         sx={{
                           '& .MuiOutlinedInput-root': {
                             color: premiumColors.white,
@@ -611,6 +731,73 @@ const Login = ({ onClose, onSwitchToSignup }) => {
                       />
                     </Box>
 
+                    {/* Demo Credentials Buttons */}
+                    <Box sx={{
+                      display: 'flex',
+                      flexDirection: { xs: 'column', sm: 'row' },
+                      gap: 2,
+                      mb: { xs: 3, lg: 5 },
+                      justifyContent: 'center',
+                      alignItems: 'center'
+                    }}>
+                      <Typography sx={{
+                        color: premiumColors.goldLight + 'E0',
+                        fontSize: '0.9rem',
+                        fontWeight: 600,
+                        fontFamily: "'Playfair Display', serif",
+                      }}>
+                        Test avec:
+                      </Typography>
+                      <Box sx={{ display: 'flex', gap: 1 }}>
+                        <Button
+                          type="button"
+                          onClick={() => fillDemoCredentials('super-admin')}
+                          sx={{
+                            color: premiumColors.gold,
+                            textTransform: 'none',
+                            fontSize: '0.85rem',
+                            fontWeight: 600,
+                            fontFamily: "'Playfair Display', serif",
+                            px: 2,
+                            py: 0.8,
+                            borderRadius: 2,
+                            background: premiumColors.gold + '10',
+                            border: `1px solid ${premiumColors.gold + '30'}`,
+                            '&:hover': {
+                              color: premiumColors.goldLight,
+                              background: premiumColors.gold + '20',
+                              transform: 'translateY(-1px)',
+                            }
+                          }}
+                        >
+                          Super Admin
+                        </Button>
+                        <Button
+                          type="button"
+                          onClick={() => fillDemoCredentials('admin')}
+                          sx={{
+                            color: premiumColors.gold,
+                            textTransform: 'none',
+                            fontSize: '0.85rem',
+                            fontWeight: 600,
+                            fontFamily: "'Playfair Display', serif",
+                            px: 2,
+                            py: 0.8,
+                            borderRadius: 2,
+                            background: premiumColors.gold + '10',
+                            border: `1px solid ${premiumColors.gold + '30'}`,
+                            '&:hover': {
+                              color: premiumColors.goldLight,
+                              background: premiumColors.gold + '20',
+                              transform: 'translateY(-1px)',
+                            }
+                          }}
+                        >
+                          Admin
+                        </Button>
+                      </Box>
+                    </Box>
+
                     <Box sx={{
                       display: 'flex',
                       justifyContent: 'space-between',
@@ -627,81 +814,44 @@ const Login = ({ onClose, onSwitchToSignup }) => {
                           flexWrap: 'wrap',
                         }}
                       >
-                        {/* Super Admin */}
-                        <FormControlLabel
-                          control={
-                            <Checkbox
-                              checked={rememberMeSA}
-                              onChange={e => setRememberMeSA(e.target.checked)}
-                              sx={{
-                                color: premiumColors.gold,
-                                '&.Mui-checked': { color: premiumColors.gold },
-                                p: { xs: 1, lg: 1.5 },
-                                '& .MuiSvgIcon-root': { fontSize: { xs: 20, lg: 24 } },
-                              }}
-                            />
-                          }
-                          label={
-                            <Typography
-                              sx={{
-                                color: premiumColors.goldLight,
-                                fontSize: { xs: '0.9rem', lg: '1rem' },
-                                fontFamily: "'Playfair Display', serif",
-                                fontWeight: 600,
-                              }}
-                            >
-                              Super Admin
-                            </Typography>
-                          }
-                        />
-
-                        {/* Admin */}
-                        <FormControlLabel
-                          control={
-                            <Checkbox
-                              checked={rememberMeA}
-                              onChange={e => setRememberMeA(e.target.checked)}
-                              sx={{
-                                color: premiumColors.gold,
-                                '&.Mui-checked': { color: premiumColors.gold },
-                                p: { xs: 1, lg: 1.5 },
-                                '& .MuiSvgIcon-root': { fontSize: { xs: 20, lg: 24 } },
-                              }}
-                            />
-                          }
-                          label={
-                            <Typography
-                              sx={{
-                                color: premiumColors.goldLight,
-                                fontSize: { xs: '0.9rem', lg: '1rem' },
-                                fontFamily: "'Playfair Display', serif",
-                                fontWeight: 600,
-                              }}
-                            >
-                              Admin
-                            </Typography>
-                          }
-                        />
+                        {/* Keep Forgot Password Button */}
                       </Box>
 
-                      <Button sx={{
-                        color: premiumColors.gold,
-                        textTransform: 'none',
-                        fontSize: { xs: '0.9rem', lg: '1rem' },
-                        fontWeight: 700,
-                        fontFamily: "'Playfair Display', serif",
-                        px: 2,
-                        py: 1,
-                        borderRadius: 2,
-                        background: premiumColors.gold + '15',
-                        '&:hover': {
-                          color: premiumColors.goldLight,
-                          background: premiumColors.gold + '25',
-                          transform: 'translateY(-2px)',
-                          boxShadow: `0 8px 25px ${premiumColors.gold}30`
-                        },
-                        transition: 'all 0.3s ease'
-                      }}>
+                      <Button 
+                        type="button"
+                        onClick={() => {
+                          // Handle forgot password
+                          toast.custom(
+                            (t) => (
+                              <CustomToast
+                                type="info"
+                                email={formData.email || "Utilisateur"}
+                                message="Fonctionnalité de réinitialisation du mot de passe bientôt disponible."
+                                onDismiss={() => toast.dismiss(t)}
+                              />
+                            ),
+                            { duration: 5000, id: 'forgot-password-info' }
+                          );
+                        }}
+                        sx={{
+                          color: premiumColors.gold,
+                          textTransform: 'none',
+                          fontSize: { xs: '0.9rem', lg: '1rem' },
+                          fontWeight: 700,
+                          fontFamily: "'Playfair Display', serif",
+                          px: 2,
+                          py: 1,
+                          borderRadius: 2,
+                          background: premiumColors.gold + '15',
+                          '&:hover': {
+                            color: premiumColors.goldLight,
+                            background: premiumColors.gold + '25',
+                            transform: 'translateY(-2px)',
+                            boxShadow: `0 8px 25px ${premiumColors.gold}30`
+                          },
+                          transition: 'all 0.3s ease'
+                        }}
+                      >
                         Mot de passe oublié ?
                       </Button>
                     </Box>
@@ -749,7 +899,7 @@ const Login = ({ onClose, onSwitchToSignup }) => {
                       ) : (
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                           <Security fontSize="small" />
-                          <span>Se Connecter</span>
+                          <span>Se Connecter en tant qu'Admin</span>
                           <ChevronRight fontSize="small" />
                         </Box>
                       )}
@@ -763,7 +913,7 @@ const Login = ({ onClose, onSwitchToSignup }) => {
                         fontWeight: 600,
                         letterSpacing: '0.3px'
                       }}>
-                        Première visite ?{' '}
+                        Nouvel administrateur ?{' '}
                         <Button
                           onClick={onSwitchToSignup}
                           endIcon={<ChevronRight sx={{ fontSize: { xs: 20, lg: 24 }, ml: -0.5 }} />}
@@ -782,7 +932,7 @@ const Login = ({ onClose, onSwitchToSignup }) => {
                             }
                           }}
                         >
-                          Créer un compte
+                          Créer un compte administrateur
                         </Button>
                       </Typography>
                     </Box>
@@ -833,7 +983,7 @@ const Login = ({ onClose, onSwitchToSignup }) => {
               fontSize: '1.1rem',
               fontWeight: 600
             }}>
-              Vérification de vos identifiants
+              Vérification de vos identifiants d'administration
             </Typography>
           </Box>
         </Backdrop>

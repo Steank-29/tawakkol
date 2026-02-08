@@ -27,190 +27,165 @@ import {
   Paper,
   LinearProgress,
   Divider,
-  Badge,
-  CircularProgress
+  Badge
 } from '@mui/material';
 import {
-  FlashOn,
   ShoppingBag,
   ArrowForward,
   LocalShipping,
   Shield,
-  TrendingUp,
   CheckCircle,
   Star,
   Favorite,
   Compare,
   Groups,
   Timer,
-  Thermostat,
-  WaterDrop,
-  Air,
-  Scale,
   Close,
   Verified,
   Diamond,
   WorkspacePremium,
   Loyalty,
   LocalFireDepartment,
-  Inventory,
   Person,
-  FitnessCenter,
-  ExpandMore,
-  Visibility
+  MenuBook,
+  NightsStay,
+  Palette,
+  Security,
+  Mosque,
+  Psychology,
+  Spa,
+  WorkspacePremium as Quality
 } from '@mui/icons-material';
 import { motion, useInView, AnimatePresence } from 'framer-motion';
 import SwipeableViews from 'react-swipeable-views';
 
-import heroImage from '../../assets/sport.png';
-import jerseyImage from '../../assets/jersey.png';
-import shortImage from '../../assets/short.png';
-import sleevelessImage from '../../assets/sleeveless.png';
-import hoodieImage from '../../assets/hoodie.png';
-import pantsImage from '../../assets/pants.png';
-import athlete1 from '../../assets/hoodie.png';
-import athlete2 from '../../assets/pants.png';
-import athlete3 from '../../assets/short.png';
+// Import Islamic clothing images - Update these paths with your actual images
+import heroImage from '../../assets/islamic.jpeg';
+import qamisImage from '../../assets/Qamiss.jpeg';
+import thobeImage from '../../assets/Qachabeeya.jpeg';
+import hijabImage from '../../assets/ISPants.jpeg';
+import islamicPattern from '../../assets/full.jpeg';
+import mosqueImage from '../../assets/Qamiss.jpeg';
 
 /* =======================
-   ENHANCED DESIGN TOKENS
+   ENHANCED DESIGN TOKENS - ISLAMIC THEME
 ======================= */
 const colors = {
-  black: '#0b0b0b',
-  dark: '#121212',
-  gold: '#d4af37',
-  goldSoft: '#f4e4a6',
-  platinum: '#e5e4e2',
-  carbon: '#333333',
-  white: '#ffffff',
-  gradientGold: 'linear-gradient(135deg, #d4af37 0%, #f9d423 50%, #d4af37 100%)',
-  gradientPlatinum: 'linear-gradient(135deg, #e5e4e2 0%, #ffffff 50%, #e5e4e2 100%)',
-  gradientDark: 'linear-gradient(180deg, #121212 0%, #0b0b0b 100%)',
-  gradientCarbon: 'linear-gradient(135deg, #333333 0%, #1a1a1a 50%, #333333 100%)',
+  green: '#2E8B57',
+  gold: '#D4AF37',
+  dark: '#0F172A',
+  cream: '#F5F5DC',
+  lightGreen: '#90EE90',
+  white: '#FFFFFF',
+  gradientGreen: 'linear-gradient(135deg, #2E8B57 0%, #32CD32 100%)',
+  gradientGold: 'linear-gradient(135deg, #D4AF37 0%, #FFD700 100%)',
+  gradientDark: 'linear-gradient(180deg, #0F172A 0%, #020617 100%)',
 };
 
 /* =======================
-   ENHANCED DATA
+   ENHANCED DATA - ISLAMIC CONTEXT
 ======================= */
 const premiumStats = [
-  { value: '1K+', label: 'Produits Premium', icon: Diamond, sub: 'Collections exclusives' },
-  { value: '50+', label: 'Marques Élite', icon: WorkspacePremium, sub: 'Nike, Adidas, Under Armour' },
-  { value: '10K+', label: 'Athlètes Satisfaits', icon: Verified, sub: '98% de satisfaction' },
-  { value: '24h', label: 'Livraison Express', icon: Timer, sub: 'Gratuite dès 150€' },
+  { value: '100%', label: 'Halal Compliant', icon: Security, sub: 'Certified materials' },
+  { value: '500+', label: 'Islamic Designs', icon: MenuBook, sub: 'Traditional patterns' },
+  { value: '10K+', label: 'Community', icon: Groups, sub: 'Trusted by Ummah' },
+  { value: '48h', label: 'Fast Delivery', icon: Timer, sub: 'Discreet packaging' },
 ];
 
 const premiumFeatures = [
-  { icon: Shield, text: 'Garantie Qualité 2 Ans', sub: 'Premium garantie' },
-  { icon: LocalShipping, text: 'Retours Gratuits 60 Jours', sub: 'Sans frais' },
-  { icon: Groups, text: 'Support Expert 24/7', sub: 'Conseils personnalisés' },
-  { icon: Loyalty, text: 'Programme Fidélité', sub: 'Points & récompenses' },
-  { icon: Thermostat, text: 'Technologie ClimatControl', sub: 'Régulation thermique' },
-  { icon: WaterDrop, text: 'Hydrophobe & Respirant', sub: 'Matériaux avancés' },
+  { icon: Security, text: 'Halal Certified Fabrics', sub: 'Ethically sourced' },
+  { icon: Shield, text: 'Premium Quality Guarantee', sub: '3-year warranty' },
+  { icon: NightsStay, text: 'Modest Design', sub: 'Sunnah inspired' },
+  { icon: LocalShipping, text: 'Global Free Shipping', sub: 'Over €100' },
+  { icon: Palette, text: 'Traditional Patterns', sub: 'Handcrafted details' },
+  { icon: Person, text: 'Prayer Comfort Fit', sub: 'Perfect for salah' },
 ];
-
-
-const techSpecs = {
-  jersey: {
-    material: 'Dri-FIT Elite Pro',
-    weight: '145g',
-    breathability: '98%',
-    moisture: '0.3s absorption',
-    spf: '50+',
-    durability: '200+ lavages'
-  }
-};
 
 const performanceComparison = [
   {
-    feature: 'Séchage rapide',
-    standard: '45 minutes',
-    premium: '8 minutes',
-    improvement: '82% plus rapide'
+    feature: 'Fabric Quality',
+    standard: 'Regular Cotton',
+    premium: 'Premium Egyptian',
+    improvement: '3x softer'
   },
   {
-    feature: 'Respiration',
-    standard: 'Bon',
-    premium: 'Excellente',
-    improvement: '2.5x mieux'
+    feature: 'Comfort',
+    standard: 'Good',
+    premium: 'Excellent',
+    improvement: 'Prayer-friendly'
   },
   {
-    feature: 'Durabilité',
-    standard: '6 mois',
-    premium: '24 mois',
-    improvement: 'Garantie 4x'
+    feature: 'Durability',
+    standard: '1 year',
+    premium: '5 years',
+    improvement: 'Guaranteed'
   },
   {
-    feature: 'Confort',
-    standard: 'Correct',
-    premium: 'Premium',
-    improvement: '98% satisfaction'
+    feature: 'Design',
+    standard: 'Basic',
+    premium: 'Traditional',
+    improvement: 'Authentic patterns'
   }
 ];
 
 const sizeGuide = [
-  { size: 'XS', chest: '86-91cm', waist: '71-76cm', fit: 'Athlétique' },
-  { size: 'S', chest: '91-97cm', waist: '76-81cm', fit: 'Athlétique' },
-  { size: 'M', chest: '97-102cm', waist: '81-86cm', fit: 'Standard' },
-  { size: 'L', chest: '102-107cm', waist: '86-91cm', fit: 'Standard' },
-  { size: 'XL', chest: '107-112cm', waist: '91-97cm', fit: 'Large' }
+  { size: 'S', chest: '91-97cm', length: '120-125cm', fit: 'Regular' },
+  { size: 'M', chest: '97-102cm', length: '125-130cm', fit: 'Regular' },
+  { size: 'L', chest: '102-107cm', length: '130-135cm', fit: 'Classic' },
+  { size: 'XL', chest: '107-112cm', length: '135-140cm', fit: 'Classic' },
+  { size: 'XXL', chest: '112-117cm', length: '140-145cm', fit: 'Comfort' }
 ];
 
 const limitedEditions = [
-  { id: 1, name: 'Carbon Elite Pro', remaining: 12, tag: 'Édition Limitée' },
-  { id: 2, name: 'Olympic Collection', remaining: 8, tag: 'Exclusif' },
-  { id: 3, name: 'Champions Bundle', remaining: 5, tag: 'Dernière Chance' }
+  { id: 1, name: 'Eid Collection 1446', remaining: 12, tag: 'Limited' },
+  { id: 2, name: 'Hajj Premium Set', remaining: 8, tag: 'Exclusive' },
+  { id: 3, name: 'Ramadan Bundle', remaining: 5, tag: 'Last Chance' }
 ];
 
 const gridItems = [
   {
     id: 'a',
-    title: 'T-SHIRTS',
-    image: jerseyImage,
+    title: 'QAMIS',
+    arabic: 'القميص',
+    image: qamisImage,
     link: '/catalog',
-    tag: 'Performance',
-    price: '€89',
-    material: 'Dri-FIT Elite Pro',
-    weight: '145g'
+    tag: 'Traditional',
+    price: '€129',
+    material: 'Premium Egyptian Cotton',
+    weight: '280g'
   },
   {
     id: 'b',
-    title: 'SHORTS',
-    image: shortImage,
+    title: 'THOBE',
+    arabic: 'الثوب',
+    image: thobeImage,
     link: '/catalog',
-    tag: 'Légèreté',
-    price: '€79',
-    material: 'Flexweave 4D',
-    weight: '89g'
-  },
-  {
-    id: 'c',
-    title: 'HOODIES',
-    image: hoodieImage,
-    link: '/catalog',
-    tag: 'Confort',
-    price: '€119',
-    material: 'ThermoTech Pro',
+    tag: 'Modern',
+    price: '€149',
+    material: 'Luxury Linen Blend',
     weight: '320g'
   },
   {
-    id: 'd',
-    title: 'SLEEVELESS JERSEYS',
-    image: sleevelessImage,
+    id: 'c',
+    title: 'HIJAB SET',
+    arabic: 'الحجاب',
+    image: hijabImage,
     link: '/catalog',
-    tag: 'Flexibilité',
-    price: '€69',
-    material: 'AirFlow Mesh',
-    weight: '110g'
+    tag: 'Elegant',
+    price: '€89',
+    material: 'Chiffon & Crepe',
+    weight: '120g'
   },
   {
-    id: 'e',
-    title: 'PANTS',
-    image: pantsImage,
+    id: 'd',
+    title: 'PRAYER SET',
+    arabic: 'مجموعة الصلاة',
+    image: islamicPattern,
     link: '/catalog',
-    tag: 'Endurance',
-    price: '€99',
-    material: 'Compression Elite',
-    weight: '210g'
+    tag: 'Bundle',
+    price: '€199',
+    material: 'Complete Collection',
+    weight: '680g'
   }
 ];
 
@@ -257,11 +232,11 @@ const ProductShowcase3D = ({ product }) => {
             width: '100%',
             height: '100%',
             backfaceVisibility: 'hidden',
-            background: colors.gradientCarbon,
+            background: colors.gradientDark,
             borderRadius: 3,
             overflow: 'hidden',
-            border: `2px solid ${alpha(colors.gold, 0.3)}`,
-            boxShadow: `0 20px 40px ${alpha(colors.black, 0.8)}`
+            border: `2px solid ${alpha(colors.green, 0.3)}`,
+            boxShadow: `0 20px 40px ${alpha(colors.dark, 0.8)}`
           }}
         >
           <Box
@@ -276,9 +251,11 @@ const ProductShowcase3D = ({ product }) => {
               width: '100%',
               height: '100%',
               backgroundImage: `url(${product.image})`,
-              backgroundSize: 'cover',
+              backgroundSize: 'contain',
               backgroundPosition: 'center',
-              position: 'relative'
+              backgroundRepeat: 'no-repeat',
+              position: 'relative',
+              backgroundColor: colors.cream
             }}
           >
             <Box
@@ -286,19 +263,19 @@ const ProductShowcase3D = ({ product }) => {
                 position: 'absolute',
                 bottom: 16,
                 left: 16,
-                background: alpha(colors.black, 0.8),
+                background: alpha(colors.dark, 0.8),
                 backdropFilter: 'blur(10px)',
                 borderRadius: 2,
                 p: 1.5,
-                border: `1px solid ${alpha(colors.gold, 0.2)}`
+                border: `1px solid ${alpha(colors.green, 0.2)}`
               }}
             >
               <Stack spacing={0.5}>
-                <Typography variant="caption" sx={{ color: colors.gold, fontWeight: 600 }}>
+                <Typography variant="caption" sx={{ color: colors.green, fontWeight: 600 }}>
                   {product.material}
                 </Typography>
                 <Typography variant="caption" sx={{ color: colors.white, opacity: 0.8 }}>
-                  Poids: {product.weight}
+                  Weight: {product.weight}
                 </Typography>
               </Stack>
             </Box>
@@ -311,19 +288,19 @@ const ProductShowcase3D = ({ product }) => {
                 width: 30,
                 height: 30,
                 borderRadius: '50%',
-                background: alpha(colors.gold, 0.2),
-                border: `1px solid ${colors.gold}`,
+                background: alpha(colors.green, 0.2),
+                border: `1px solid ${colors.green}`,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 cursor: 'pointer',
                 '&:hover': {
-                  background: alpha(colors.gold, 0.4),
+                  background: alpha(colors.green, 0.4),
                   transform: 'scale(1.1)'
                 }
               }}
             >
-              <Thermostat sx={{ fontSize: 16, color: colors.gold }} />
+              <Security sx={{ fontSize: 16, color: colors.green }} />
             </Box>
           </Box>
 
@@ -337,14 +314,14 @@ const ProductShowcase3D = ({ product }) => {
               flexDirection: 'column'
             }}
           >
-            {['Dri-FIT Elite', 'SPF 50+'].map((tech, idx) => (
+            {['Halal Certified', 'Premium Quality'].map((tech, idx) => (
               <Chip
                 key={idx}
                 label={tech}
                 size="small"
                 sx={{
-                  background: alpha(colors.gold, 0.9),
-                  color: colors.black,
+                  background: alpha(colors.green, 0.9),
+                  color: colors.white,
                   fontWeight: 700,
                   fontSize: '0.6rem',
                   backdropFilter: 'blur(10px)'
@@ -358,123 +335,14 @@ const ProductShowcase3D = ({ product }) => {
   );
 };
 
-const AthleteTestimonialCarousel = () => {
-  const [activeIndex, setActiveIndex] = useState(0);
-
-  return (
-    <Box sx={{ position: 'relative', width: '100%' }}>
-      <SwipeableViews
-        index={activeIndex}
-        onChangeIndex={setActiveIndex}
-        enableMouseEvents
-      >
-        {athleteTestimonials.map((testimonial, index) => (
-          <Box key={index} sx={{ px: 2 }}>
-            <Card
-              sx={{
-                background: alpha(colors.black, 0.6),
-                backdropFilter: 'blur(20px)',
-                border: `1px solid ${alpha(colors.gold, 0.2)}`,
-                borderRadius: 3,
-                p: 3
-              }}
-            >
-              <Stack spacing={2}>
-                <Stack direction="row" spacing={2} alignItems="center">
-                  <Avatar
-                    src={testimonial.avatar}
-                    sx={{
-                      width: 60,
-                      height: 60,
-                      border: `2px solid ${colors.gold}`
-                    }}
-                  />
-                  <Box>
-                    <Stack direction="row" alignItems="center" spacing={1}>
-                      <Typography variant="subtitle1" fontWeight={700} color={colors.white}>
-                        {testimonial.name}
-                      </Typography>
-                      {testimonial.verified && (
-                        <Verified sx={{ color: colors.gold, fontSize: 16 }} />
-                      )}
-                    </Stack>
-                    <Typography variant="body2" color={colors.goldSoft}>
-                      {testimonial.title}
-                    </Typography>
-                    <Rating
-                      value={testimonial.rating}
-                      readOnly
-                      size="small"
-                      sx={{ mt: 0.5 }}
-                      icon={<Star sx={{ color: colors.gold }} />}
-                      emptyIcon={<Star sx={{ color: alpha(colors.white, 0.3) }} />}
-                    />
-                  </Box>
-                </Stack>
-
-                <Typography
-                  sx={{
-                    fontStyle: 'italic',
-                    color: alpha(colors.white, 0.9),
-                    lineHeight: 1.6,
-                    fontSize: '0.95rem'
-                  }}
-                >
-                  "{testimonial.text}"
-                </Typography>
-
-                <Stack direction="row" spacing={0.5} flexWrap="wrap">
-                  {testimonial.achievements.map((ach, idx) => (
-                    <Chip
-                      key={idx}
-                      label={ach}
-                      size="small"
-                      sx={{
-                        background: alpha(colors.gold, 0.1),
-                        color: colors.goldSoft,
-                        border: `1px solid ${alpha(colors.gold, 0.3)}`,
-                        fontSize: '0.7rem'
-                      }}
-                    />
-                  ))}
-                </Stack>
-              </Stack>
-            </Card>
-          </Box>
-        ))}
-      </SwipeableViews>
-
-      <Stack direction="row" spacing={1} justifyContent="center" sx={{ mt: 2 }}>
-        {athleteTestimonials.map((_, idx) => (
-          <Box
-            key={idx}
-            onClick={() => setActiveIndex(idx)}
-            sx={{
-              width: 8,
-              height: 8,
-              borderRadius: '50%',
-              bgcolor: idx === activeIndex ? colors.gold : alpha(colors.white, 0.3),
-              cursor: 'pointer',
-              transition: 'all 0.3s',
-              '&:hover': {
-                bgcolor: idx === activeIndex ? colors.gold : alpha(colors.white, 0.5)
-              }
-            }}
-          />
-        ))}
-      </Stack>
-    </Box>
-  );
-};
-
 const PerformanceComparisonTable = () => {
   return (
     <TableContainer
       component={Paper}
       sx={{
-        background: alpha(colors.black, 0.6),
+        background: alpha(colors.dark, 0.6),
         backdropFilter: 'blur(10px)',
-        border: `1px solid ${alpha(colors.gold, 0.2)}`,
+        border: `1px solid ${alpha(colors.green, 0.2)}`,
         borderRadius: 2,
         overflow: 'hidden'
       }}
@@ -486,29 +354,29 @@ const PerformanceComparisonTable = () => {
               key={index}
               sx={{
                 '&:hover': {
-                  background: alpha(colors.gold, 0.05)
+                  background: alpha(colors.green, 0.05)
                 }
               }}
             >
-              <TableCell sx={{ borderColor: alpha(colors.gold, 0.1), color: colors.white, py: 1.5 }}>
+              <TableCell sx={{ borderColor: alpha(colors.green, 0.1), color: colors.cream, py: 1.5 }}>
                 <Typography fontSize="0.9rem" fontWeight={600}>{row.feature}</Typography>
               </TableCell>
-              <TableCell sx={{ borderColor: alpha(colors.gold, 0.1), color: alpha(colors.white, 0.6), py: 1.5, fontSize: '0.85rem' }}>
+              <TableCell sx={{ borderColor: alpha(colors.green, 0.1), color: alpha(colors.cream, 0.6), py: 1.5, fontSize: '0.85rem' }}>
                 {row.standard}
               </TableCell>
-              <TableCell sx={{ borderColor: alpha(colors.gold, 0.1), color: colors.gold, py: 1.5 }}>
+              <TableCell sx={{ borderColor: alpha(colors.green, 0.1), color: colors.green, py: 1.5 }}>
                 <Stack direction="row" alignItems="center" spacing={0.5}>
                   <Typography fontSize="0.85rem" fontWeight={700}>{row.premium}</Typography>
-                  <ArrowForward sx={{ fontSize: 14, color: colors.gold }} />
+                  <ArrowForward sx={{ fontSize: 14, color: colors.green }} />
                 </Stack>
               </TableCell>
-              <TableCell sx={{ borderColor: alpha(colors.gold, 0.1), py: 1.5 }}>
+              <TableCell sx={{ borderColor: alpha(colors.green, 0.1), py: 1.5 }}>
                 <Chip
                   label={row.improvement}
                   size="small"
                   sx={{
-                    background: alpha(colors.gold, 0.2),
-                    color: colors.gold,
+                    background: alpha(colors.green, 0.2),
+                    color: colors.green,
                     fontWeight: 600,
                     fontSize: '0.7rem'
                   }}
@@ -531,17 +399,17 @@ const SizeGuideModal = ({ open, onClose }) => {
       PaperProps={{
         sx: {
           background: colors.gradientDark,
-          border: `2px solid ${colors.gold}`,
+          border: `2px solid ${colors.green}`,
           borderRadius: 3
         }
       }}
     >
-      <DialogTitle sx={{ color: colors.gold, borderBottom: `1px solid ${alpha(colors.gold, 0.2)}`, py: 2 }}>
+      <DialogTitle sx={{ color: colors.green, borderBottom: `1px solid ${alpha(colors.green, 0.2)}`, py: 2 }}>
         <Stack direction="row" justifyContent="space-between" alignItems="center">
           <Typography variant="h6" fontWeight={700}>
-            Guide des Tailles Professionnel
+            Islamic Fit Guide
           </Typography>
-          <IconButton onClick={onClose} size="small" sx={{ color: colors.gold }}>
+          <IconButton onClick={onClose} size="small" sx={{ color: colors.green }}>
             <Close />
           </IconButton>
         </Stack>
@@ -556,22 +424,22 @@ const SizeGuideModal = ({ open, onClose }) => {
                     key={index}
                     sx={{
                       '&:hover': {
-                        background: alpha(colors.gold, 0.05)
+                        background: alpha(colors.green, 0.05)
                       }
                     }}
                   >
-                    <TableCell sx={{ color: colors.gold, fontWeight: 700, fontSize: '0.9rem' }}>
+                    <TableCell sx={{ color: colors.green, fontWeight: 700, fontSize: '0.9rem' }}>
                       {size.size}
                     </TableCell>
-                    <TableCell sx={{ color: colors.white, fontSize: '0.9rem' }}>{size.chest}</TableCell>
-                    <TableCell sx={{ color: colors.white, fontSize: '0.9rem' }}>{size.waist}</TableCell>
+                    <TableCell sx={{ color: colors.cream, fontSize: '0.9rem' }}>{size.chest}</TableCell>
+                    <TableCell sx={{ color: colors.cream, fontSize: '0.9rem' }}>{size.length}</TableCell>
                     <TableCell>
                       <Chip
                         label={size.fit}
                         size="small"
                         sx={{
-                          background: alpha(colors.gold, 0.2),
-                          color: colors.gold,
+                          background: alpha(colors.green, 0.2),
+                          color: colors.green,
                           fontSize: '0.75rem'
                         }}
                       />
@@ -584,31 +452,31 @@ const SizeGuideModal = ({ open, onClose }) => {
 
           <Card
             sx={{
-              background: alpha(colors.gold, 0.1),
-              border: `1px solid ${alpha(colors.gold, 0.3)}`,
+              background: alpha(colors.green, 0.1),
+              border: `1px solid ${alpha(colors.green, 0.3)}`,
               borderRadius: 2,
               p: 2
             }}
           >
             <Stack spacing={1.5}>
-              <Typography variant="subtitle2" color={colors.gold} fontWeight={700}>
-                🎯 Recommandation IA Personnalisée
+              <Typography variant="subtitle2" color={colors.green} fontWeight={700}>
+                🕌 Personalized Fit Recommendation
               </Typography>
-              <Typography color={colors.white} opacity={0.9} fontSize="0.9rem">
-                Notre intelligence artificielle analyse 15 points de mesure pour vous recommander la taille parfaite.
+              <Typography color={colors.cream} opacity={0.9} fontSize="0.9rem">
+                Our experts analyze traditional measurements for perfect prayer comfort.
               </Typography>
               <Button
                 variant="contained"
                 size="small"
                 sx={{
-                  background: colors.gradientGold,
-                  color: colors.black,
+                  background: colors.gradientGreen,
+                  color: colors.white,
                   fontWeight: 700,
                   alignSelf: 'flex-start',
                   fontSize: '0.85rem'
                 }}
               >
-                Obtenir ma taille IA
+                Get Perfect Fit
               </Button>
             </Stack>
           </Card>
@@ -621,7 +489,7 @@ const SizeGuideModal = ({ open, onClose }) => {
 /* =======================
    MAIN COMPONENT - ENHANCED
 ======================= */
-export default function Sport() {
+export default function Religion() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [sizeGuideOpen, setSizeGuideOpen] = useState(false);
@@ -633,8 +501,6 @@ export default function Sport() {
   const isTitleInView = useInView(titleRef, { once: true, amount: 0.5 });
   const gridRef = useRef(null);
   const isGridInView = useInView(gridRef, { once: true, amount: 0.3 });
-  const testimonialRef = useRef(null);
-  const isTestimonialInView = useInView(testimonialRef, { once: true, amount: 0.3 });
 
   const addToCart = (product) => {
     setCartItems([...cartItems, product]);
@@ -654,7 +520,7 @@ export default function Sport() {
         minHeight: '250vh',
         width: '99vw',
         background: colors.gradientDark,
-        color: colors.white,
+        color: colors.cream,
         overflow: 'hidden',
         position: 'relative',
       }}
@@ -673,19 +539,19 @@ export default function Sport() {
         >
           <Card
             sx={{
-              background: alpha(colors.black, 0.95),
+              background: alpha(colors.dark, 0.95),
               backdropFilter: 'blur(20px)',
-              border: `2px solid ${colors.gold}`,
+              border: `2px solid ${colors.green}`,
               borderRadius: 2,
               p: 1.5,
-              boxShadow: `0 10px 30px ${alpha(colors.black, 0.8)}`
+              boxShadow: `0 10px 30px ${alpha(colors.dark, 0.8)}`
             }}
           >
             <Stack spacing={1}>
               <Stack direction="row" alignItems="center" spacing={1}>
-                <ShoppingBag sx={{ color: colors.gold, fontSize: 18 }} />
-                <Typography color={colors.white} fontWeight={600} fontSize="0.9rem">
-                  Kit Complet ({cartItems.length})
+                <ShoppingBag sx={{ color: colors.green, fontSize: 18 }} />
+                <Typography color={colors.cream} fontWeight={600} fontSize="0.9rem">
+                  Islamic Collection ({cartItems.length})
                 </Typography>
               </Stack>
               <AvatarGroup max={3}>
@@ -693,20 +559,20 @@ export default function Sport() {
                   <Avatar
                     key={idx}
                     src={item.image}
-                    sx={{ width: 28, height: 28, border: `2px solid ${colors.gold}` }}
+                    sx={{ width: 28, height: 28, border: `2px solid ${colors.green}` }}
                   />
                 ))}
               </AvatarGroup>
               <Button
                 size="small"
                 sx={{
-                  background: colors.gradientGold,
-                  color: colors.black,
+                  background: colors.gradientGreen,
+                  color: colors.white,
                   fontWeight: 700,
                   fontSize: '0.8rem'
                 }}
               >
-                Finaliser (€{cartItems.length * 89})
+                Complete Order (€{cartItems.length * 129})
               </Button>
             </Stack>
           </Card>
@@ -734,14 +600,14 @@ export default function Sport() {
             right: 0,
             bottom: 0,
             background: `
-              linear-gradient(90deg, ${colors.black} 0%, transparent 30%, transparent 100%),
-              linear-gradient(180deg, ${colors.black} 0%, transparent 60%, transparent 100%)
+              linear-gradient(90deg, ${colors.dark} 0%, transparent 30%, transparent 100%),
+              linear-gradient(180deg, ${colors.dark} 0%, transparent 60%, transparent 100%)
             `,
             zIndex: 2,
           }}
         />
         
-        {/* Gold Edge Glow */}
+        {/* Green Edge Glow */}
         <Box
           sx={{
             position: 'absolute',
@@ -749,12 +615,12 @@ export default function Sport() {
             top: 0,
             bottom: 0,
             width: '3px',
-            background: colors.gradientGold,
+            background: colors.gradientGreen,
             zIndex: 3,
             boxShadow: `
-              0 0 30px ${colors.gold},
-              0 0 60px ${alpha(colors.gold, 0.5)},
-              0 0 90px ${alpha(colors.gold, 0.2)}
+              0 0 30px ${colors.green},
+              0 0 60px ${alpha(colors.green, 0.5)},
+              0 0 90px ${alpha(colors.green, 0.2)}
             `,
           }}
         />
@@ -763,7 +629,7 @@ export default function Sport() {
         <Box
           component="img"
           src={heroImage}
-          alt="Sport lifestyle"
+          alt="Islamic modest fashion"
           sx={{
             position: 'absolute',
             top: 0,
@@ -776,7 +642,7 @@ export default function Sport() {
           }}
         />
         
-        {/* Subtle Noise Texture */}
+        {/* Subtle Islamic Pattern Overlay */}
         <Box
           sx={{
             position: 'absolute',
@@ -784,8 +650,8 @@ export default function Sport() {
             right: 0,
             width: '100%',
             height: '100%',
-            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E")`,
-            opacity: 0.03,
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%232E8B57' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E")`,
+            opacity: 0.1,
             mixBlendMode: 'overlay',
             zIndex: 1,
           }}
@@ -800,7 +666,7 @@ export default function Sport() {
           left: 0,
           right: { xs: 0, md: '50%' },
           bottom: 0,
-          background: `radial-gradient(circle at 20% 40%, ${alpha(colors.gold, 0.08)} 0%, transparent 70%)`,
+          background: `radial-gradient(circle at 20% 40%, ${alpha(colors.green, 0.08)} 0%, transparent 70%)`,
           zIndex: 0,
         }}
       />
@@ -842,12 +708,12 @@ export default function Sport() {
                   transition={{ duration: 0.5 }}
                 >
                   <Chip
-                    icon={<Diamond sx={{ fontSize: '1.1rem' }} />}
-                    label="ÉQUIPEMENT ÉLITE - ÉDITION PREMIUM"
+                    icon={<Security sx={{ fontSize: '1.1rem' }} />}
+                    label="HALAL CERTIFIED • MODEST WEAR"
                     sx={{
                       mb: { xs: 3, md: 4 },
-                      background: colors.gradientGold,
-                      color: colors.black,
+                      background: colors.gradientGreen,
+                      color: colors.white,
                       fontWeight: 900,
                       fontSize: { xs: '0.75rem', md: '0.85rem' },
                       py: 1,
@@ -876,13 +742,13 @@ export default function Sport() {
                     },
                     lineHeight: 1.1,
                     mb: 3,
-                    background: `linear-gradient(90deg, ${colors.white} 40%, ${colors.gold} 100%)`,
+                    background: `linear-gradient(90deg, ${colors.cream} 40%, ${colors.green} 100%)`,
                     WebkitBackgroundClip: 'text',
                     WebkitTextFillColor: 'transparent',
                     backgroundClip: 'text',
                   }}
                 >
-                  Redéfinissez Vos
+                  Elevate Your
                   <Box
                     component="span"
                     sx={{
@@ -893,7 +759,7 @@ export default function Sport() {
                       backgroundClip: 'text',
                     }}
                   >
-                    Limites de Performance
+                    Islamic Modesty
                   </Box>
                 </Typography>
 
@@ -911,10 +777,10 @@ export default function Sport() {
                     maxWidth: '90%',
                   }}
                 >
-                  Technologies brevetées développées avec la NASA, matériaux innovants 
-                  et design primé par les plus grands athlètes mondiaux. 
-                  <Box component="span" sx={{ color: colors.gold, fontWeight: 700 }}>
-                    {' '}L'équipement qui fait la différence.
+                  Traditional craftsmanship meets modern modest wear. Premium Islamic clothing 
+                  designed with devotion for the discerning believer. 
+                  <Box component="span" sx={{ color: colors.green, fontWeight: 700 }}>
+                    {' '}Experience prayer in perfect comfort.
                   </Box>
                 </Typography>
 
@@ -929,25 +795,25 @@ export default function Sport() {
                       >
                         <Card
                           sx={{
-                            background: alpha(colors.black, 0.6),
-                            border: `1px solid ${alpha(colors.gold, 0.2)}`,
+                            background: alpha(colors.dark, 0.6),
+                            border: `1px solid ${alpha(colors.green, 0.2)}`,
                             borderRadius: 2,
                             p: 2,
                             height: '100%',
                             transition: 'all 0.3s',
                             '&:hover': {
-                              borderColor: colors.gold,
+                              borderColor: colors.green,
                               transform: 'translateY(-2px)',
-                              boxShadow: `0 10px 20px ${alpha(colors.gold, 0.2)}`
+                              boxShadow: `0 10px 20px ${alpha(colors.green, 0.2)}`
                             }
                           }}
                         >
                           <Stack spacing={1}>
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                              <feature.icon sx={{ color: colors.gold, fontSize: '1.2rem' }} />
+                              <feature.icon sx={{ color: colors.green, fontSize: '1.2rem' }} />
                               <Typography
                                 sx={{
-                                  color: colors.white,
+                                  color: colors.cream,
                                   fontWeight: 600,
                                   fontSize: '0.9rem'
                                 }}
@@ -957,7 +823,7 @@ export default function Sport() {
                             </Box>
                             <Typography
                               sx={{
-                                color: colors.goldSoft,
+                                color: alpha(colors.green, 0.8),
                                 fontSize: '0.75rem',
                                 opacity: 0.8
                               }}
@@ -981,37 +847,37 @@ export default function Sport() {
                     component={motion.button}
                     whileHover={{ 
                       scale: 1.05,
-                      boxShadow: `0 15px 30px ${alpha(colors.gold, 0.4)}`
+                      boxShadow: `0 15px 30px ${alpha(colors.green, 0.4)}`
                     }}
                     whileTap={{ scale: 0.95 }}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 0.8 }}
-                    startIcon={<Diamond />}
+                    startIcon={<Security />}
                     endIcon={<ArrowForward />}
                     sx={{
-                      background: colors.gradientGold,
-                      color: colors.black,
+                      background: colors.gradientGreen,
+                      color: colors.white,
                       fontWeight: 800,
                       px: { xs: 4, md: 5 },
                       py: { xs: 1.6, md: 1.8 },
                       borderRadius: 2,
                       fontSize: { xs: '0.9rem', md: '0.95rem' },
                       minWidth: { sm: 220 },
-                      boxShadow: `0 5px 15px ${alpha(colors.gold, 0.3)}`,
+                      boxShadow: `0 5px 15px ${alpha(colors.green, 0.3)}`,
                       zIndex: 2,
                       position: 'relative',
                     }}
                     onClick={() => addToCart(selectedProduct)}
                   >
-                    Ajouter au Kit Élite (€89)
+                    Add to Collection (€129)
                   </Button>
 
                   <Button
                     component={motion.button}
                     whileHover={{ 
                       scale: 1.05,
-                      backgroundColor: alpha(colors.gold, 0.12)
+                      backgroundColor: alpha(colors.green, 0.12)
                     }}
                     whileTap={{ scale: 0.95 }}
                     initial={{ opacity: 0, y: 20 }}
@@ -1020,8 +886,8 @@ export default function Sport() {
                     variant="outlined"
                     startIcon={<WorkspacePremium />}
                     sx={{
-                      borderColor: colors.gold,
-                      color: colors.gold,
+                      borderColor: colors.green,
+                      color: colors.green,
                       px: { xs: 4, md: 5 },
                       py: { xs: 1.6, md: 1.8 },
                       borderRadius: 2,
@@ -1029,14 +895,14 @@ export default function Sport() {
                       fontWeight: 600,
                       minWidth: { sm: 180 },
                       '&:hover': {
-                        borderColor: colors.goldSoft,
-                        background: alpha(colors.gold, 0.08),
+                        borderColor: colors.lightGreen,
+                        background: alpha(colors.green, 0.08),
                       },
                       zIndex: 2,
                       position: 'relative',
                     }}
                   >
-                    Configurer mon Kit
+                    Customize Your Set
                   </Button>
                 </Stack>
 
@@ -1056,8 +922,8 @@ export default function Sport() {
                     >
                       <Card
                         sx={{
-                          background: alpha(colors.black, 0.6),
-                          border: `1px solid ${alpha(colors.gold, 0.1)}`,
+                          background: alpha(colors.dark, 0.6),
+                          border: `1px solid ${alpha(colors.green, 0.1)}`,
                           borderRadius: 2,
                           p: 2,
                           minWidth: 150
@@ -1067,7 +933,7 @@ export default function Sport() {
                           <Stack direction="row" alignItems="center" spacing={1.5}>
                             <Box
                               sx={{
-                                background: alpha(colors.gold, 0.1),
+                                background: alpha(colors.green, 0.1),
                                 borderRadius: 2,
                                 p: 1,
                                 display: 'flex',
@@ -1075,16 +941,16 @@ export default function Sport() {
                                 justifyContent: 'center',
                               }}
                             >
-                              <stat.icon sx={{ color: colors.gold, fontSize: '1.5rem' }} />
+                              <stat.icon sx={{ color: colors.green, fontSize: '1.5rem' }} />
                             </Box>
                             <Box>
-                              <Typography fontWeight={900} color={colors.gold} sx={{ fontSize: '1.5rem' }}>
+                              <Typography fontWeight={900} color={colors.green} sx={{ fontSize: '1.5rem' }}>
                                 {stat.value}
                               </Typography>
-                              <Typography fontSize="0.85rem" color={colors.white} fontWeight={600}>
+                              <Typography fontSize="0.85rem" color={colors.cream} fontWeight={600}>
                                 {stat.label}
                               </Typography>
-                              <Typography fontSize="0.7rem" opacity={0.7} color={colors.goldSoft}>
+                              <Typography fontSize="0.7rem" opacity={0.7} color={alpha(colors.green, 0.8)}>
                                 {stat.sub}
                               </Typography>
                             </Box>
@@ -1114,25 +980,32 @@ export default function Sport() {
                 transition={{ duration: 0.8 }}
               >
                 <Stack spacing={3}>
-                  <Typography variant="h3" sx={{ color: colors.gold, fontWeight: 900, fontSize: { xs: '1.8rem', md: '2.2rem' } }}>
-                    Visualisez la Technologie
+                  <Typography variant="h3" sx={{ color: colors.green, fontWeight: 900, fontSize: { xs: '1.8rem', md: '2.2rem' } }}>
+                    Experience Islamic Craftsmanship
                   </Typography>
                   <ProductShowcase3D product={selectedProduct} />
                   
-                  {/* Tech Specs */}
-                  <Card sx={{ background: alpha(colors.black, 0.6), p: 2.5 }}>
-                    <Typography variant="h6" color={colors.white} mb={1.5} fontSize="1.1rem">
-                      📊 Spécifications Techniques
+                  {/* Fabric Specs */}
+                  <Card sx={{ background: alpha(colors.dark, 0.6), p: 2.5 }}>
+                    <Typography variant="h6" color={colors.cream} mb={1.5} fontSize="1.1rem">
+                      📜 Premium Fabric Details
                     </Typography>
                     <Grid container spacing={1.5}>
-                      {Object.entries(techSpecs.jersey).map(([key, value]) => (
-                        <Grid item xs={6} key={key}>
+                      {[
+                        { key: 'Material', value: 'Egyptian Cotton' },
+                        { key: 'Weave', value: 'Traditional' },
+                        { key: 'Breathability', value: 'Excellent' },
+                        { key: 'Durability', value: '200+ washes' },
+                        { key: 'Comfort', value: 'Prayer-friendly' },
+                        { key: 'Design', value: 'Authentic' }
+                      ].map((spec, idx) => (
+                        <Grid item xs={6} key={idx}>
                           <Stack>
-                            <Typography variant="caption" color={alpha(colors.white, 0.6)} fontSize="0.75rem">
-                              {key.toUpperCase()}
+                            <Typography variant="caption" color={alpha(colors.cream, 0.6)} fontSize="0.75rem">
+                              {spec.key.toUpperCase()}
                             </Typography>
-                            <Typography color={colors.gold} fontWeight={600} fontSize="0.9rem">
-                              {value}
+                            <Typography color={colors.green} fontWeight={600} fontSize="0.9rem">
+                              {spec.value}
                             </Typography>
                           </Stack>
                         </Grid>
@@ -1151,8 +1024,8 @@ export default function Sport() {
                   whileInView={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.8 }}
                 >
-                  <Typography variant="h4" sx={{ color: colors.white, fontWeight: 900, mb: 2, fontSize: { xs: '1.5rem', md: '1.8rem' } }}>
-                  Wellness-Focused Technology
+                  <Typography variant="h4" sx={{ color: colors.cream, fontWeight: 900, mb: 2, fontSize: { xs: '1.5rem', md: '1.8rem' } }}>
+                    Premium vs Standard
                   </Typography>
                   <PerformanceComparisonTable />
                 </motion.div>
@@ -1165,8 +1038,8 @@ export default function Sport() {
                 >
                   <Card
                     sx={{
-                      background: `linear-gradient(135deg, ${colors.black}, ${colors.carbon})`,
-                      border: `2px solid ${colors.gold}`,
+                      background: `linear-gradient(135deg, ${colors.dark}, #1E293B)`,
+                      border: `2px solid ${colors.green}`,
                       borderRadius: 2,
                       p: 2.5,
                       position: 'relative',
@@ -1175,30 +1048,30 @@ export default function Sport() {
                   >
                     <Stack spacing={1.5}>
                       <Stack direction="row" alignItems="center" spacing={1}>
-                        <LocalFireDepartment sx={{ color: colors.gold }} />
-                        <Typography variant="h6" color={colors.white} fontWeight={700} fontSize="1rem">
-                          Éditions Limitées
+                        <LocalFireDepartment sx={{ color: colors.green }} />
+                        <Typography variant="h6" color={colors.cream} fontWeight={700} fontSize="1rem">
+                          Limited Islamic Editions
                         </Typography>
                       </Stack>
-                      <Typography color={colors.goldSoft} fontSize="0.9rem">
-                        Ces collections exclusives partent rapidement. Ne manquez pas votre chance.
+                      <Typography color={alpha(colors.cream, 0.8)} fontSize="0.9rem">
+                        These exclusive collections sell out quickly. Don't miss your chance.
                       </Typography>
                       {liveInventory.map((item) => (
                         <Stack key={item.id} direction="row" justifyContent="space-between" alignItems="center">
-                          <Typography color={colors.white} fontSize="0.9rem">{item.name}</Typography>
+                          <Typography color={colors.cream} fontSize="0.9rem">{item.name}</Typography>
                           <Stack alignItems="flex-end" spacing={0.5}>
                             <Chip
                               label={item.tag}
                               size="small"
                               sx={{
-                                background: alpha(colors.gold, 0.2),
-                                color: colors.gold,
+                                background: alpha(colors.green, 0.2),
+                                color: colors.green,
                                 fontWeight: 600,
                                 fontSize: '0.7rem'
                               }}
                             />
-                            <Typography variant="caption" color={alpha(colors.white, 0.7)} fontSize="0.75rem">
-                              {item.remaining} restants
+                            <Typography variant="caption" color={alpha(colors.cream, 0.7)} fontSize="0.75rem">
+                              {item.remaining} remaining
                             </Typography>
                           </Stack>
                         </Stack>
@@ -1209,9 +1082,9 @@ export default function Sport() {
                         sx={{
                           height: 6,
                           borderRadius: 3,
-                          background: alpha(colors.white, 0.1),
+                          background: alpha(colors.cream, 0.1),
                           '& .MuiLinearProgress-bar': {
-                            background: colors.gradientGold
+                            background: colors.gradientGreen
                           }
                         }}
                       />
@@ -1232,6 +1105,7 @@ export default function Sport() {
             textAlign: 'center',
             position: 'relative',
             overflow: 'hidden',
+            my: { xs: 6, md: 10 }
           }}
         >
           {/* Background glow effect */}
@@ -1243,28 +1117,43 @@ export default function Sport() {
               transform: 'translate(-50%, -50%)',
               width: '120%',
               height: '120%',
-              background: `radial-gradient(circle, ${alpha(colors.gold, 0.05)} 0%, transparent 70%)`,
+              background: `radial-gradient(circle, ${alpha(colors.green, 0.05)} 0%, transparent 70%)`,
               filter: 'blur(60px)',
             }}
           />
+          <Typography
+            variant="h2"
+            sx={{
+              fontWeight: 900,
+              fontSize: { xs: '2rem', md: '2.5rem', lg: '3rem' },
+              background: `linear-gradient(90deg, ${colors.cream} 30%, ${colors.green} 100%)`,
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              position: 'relative',
+              zIndex: 1,
+            }}
+          >
+            Islamic Collections
+          </Typography>
+          <Typography
+            sx={{
+              color: alpha(colors.cream, 0.7),
+              fontSize: '1.1rem',
+              mt: 2,
+              position: 'relative',
+              zIndex: 1,
+            }}
+          >
+            Premium modest wear for every occasion
+          </Typography>
         </Box>
 
         {/* =======================
-           ENHANCED PRODUCT GRID - FIXED CARDS
+           IMAGE GRID SECTION
         ======================= */}
         <Box
           ref={gridRef}
-          sx={{
-            width: '100%',
-          }}
-        >
-
-        </Box>
-
-        {/* =======================
-           IMAGE GRID SECTION - ADDED FROM PREVIOUS CODE
-        ======================= */}
-        <Box
           sx={{
             width: '100%',
             mt: { xs: 2, md: 1 }
@@ -1276,11 +1165,11 @@ export default function Sport() {
               gap: 2,
               gridTemplateColumns: {
                 xs: '1fr',
-                md: 'repeat(3, 1fr)',
+                md: 'repeat(2, 1fr)',
               },
               gridTemplateRows: {
-                xs: 'repeat(5, minmax(200px, 1fr))',
-                md: 'repeat(3, minmax(250px, 1fr))',
+                xs: 'repeat(4, minmax(200px, 1fr))',
+                md: 'repeat(2, minmax(300px, 1fr))',
               },
               gridTemplateAreas: {
                 xs: `
@@ -1288,12 +1177,10 @@ export default function Sport() {
                   "b"
                   "c"
                   "d"
-                  "e"
                 `,
                 md: `
-                  "a c e"
-                  "b c e"
-                  "b d e"
+                  "a b"
+                  "c d"
                 `,
               },
             }}
@@ -1313,7 +1200,7 @@ export default function Sport() {
                 }}
                 transition={{ 
                   duration: 0.6, 
-                  delay: (index + gridItems.length) * 0.1,
+                  delay: index * 0.1,
                   ease: "easeOut"
                 }}
                 style={{
@@ -1325,7 +1212,7 @@ export default function Sport() {
                   component={motion.div}
                   whileHover={{ 
                     scale: 1.02,
-                    boxShadow: `0 30px 80px ${alpha(colors.gold, 0.3)}`
+                    boxShadow: `0 30px 80px ${alpha(colors.green, 0.3)}`
                   }}
                   transition={{ duration: 0.4 }}
                   sx={{
@@ -1338,9 +1225,9 @@ export default function Sport() {
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                     boxShadow: `
-                      0 20px 60px ${alpha(colors.black, 0.8)},
-                      0 5px 15px ${alpha(colors.black, 0.4)},
-                      inset 0 0 0 1px ${alpha(colors.gold, 0.1)}
+                      0 20px 60px ${alpha(colors.dark, 0.8)},
+                      0 5px 15px ${alpha(colors.dark, 0.4)},
+                      inset 0 0 0 1px ${alpha(colors.green, 0.1)}
                     `,
                     '&::before': {
                       content: '""',
@@ -1359,7 +1246,7 @@ export default function Sport() {
                       content: '""',
                       position: 'absolute',
                       inset: 0,
-                      background: colors.gradientGold,
+                      background: colors.gradientGreen,
                       opacity: 0,
                       transition: '0.4s',
                       mixBlendMode: 'overlay',
@@ -1391,13 +1278,35 @@ export default function Sport() {
                       label={item.tag}
                       size="small"
                       sx={{
-                        background: alpha(colors.gold, 0.9),
-                        color: colors.black,
+                        background: alpha(colors.green, 0.9),
+                        color: colors.white,
                         fontWeight: 700,
                         fontSize: '0.7rem',
                         backdropFilter: 'blur(10px)',
                       }}
                     />
+                  </Box>
+
+                  {/* Arabic Title */}
+                  <Box
+                    sx={{
+                      position: 'absolute',
+                      top: 16,
+                      right: 16,
+                      zIndex: 3,
+                    }}
+                  >
+                    <Typography
+                      sx={{
+                        color: colors.cream,
+                        fontSize: '1.2rem',
+                        fontStyle: 'italic',
+                        fontWeight: 600,
+                        textShadow: '2px 2px 4px rgba(0,0,0,0.5)'
+                      }}
+                    >
+                      {item.arabic}
+                    </Typography>
                   </Box>
 
                   {/* Gradient Overlay */}
@@ -1408,7 +1317,7 @@ export default function Sport() {
                       left: 0,
                       right: 0,
                       height: '60%',
-                      background: `linear-gradient(180deg, transparent 0%, ${alpha(colors.black, 0.9)} 100%)`,
+                      background: `linear-gradient(180deg, transparent 0%, ${alpha(colors.dark, 0.9)} 100%)`,
                       zIndex: 2,
                     }}
                   />
@@ -1433,34 +1342,57 @@ export default function Sport() {
                       sx={{
                         fontSize: { xs: '1.5rem', md: '1.8rem' },
                         fontWeight: 900,
-                        color: colors.white,
+                        color: colors.cream,
                         mb: 3,
                         letterSpacing: 2,
-                        textShadow: `0 2px 10px ${alpha(colors.black, 0.8)}`,
+                        textShadow: `0 2px 10px ${alpha(colors.dark, 0.8)}`,
                       }}
                     >
                       {item.title}
+                    </Typography>
+
+                    <Typography
+                      sx={{
+                        color: alpha(colors.cream, 0.9),
+                        fontSize: '0.9rem',
+                        mb: 2,
+                        textShadow: '2px 2px 4px rgba(0,0,0,0.5)'
+                      }}
+                    >
+                      {item.material}
+                    </Typography>
+
+                    <Typography
+                      sx={{
+                        color: colors.gold,
+                        fontSize: '1.2rem',
+                        fontWeight: 700,
+                        mb: 3,
+                        textShadow: '2px 2px 4px rgba(0,0,0,0.5)'
+                      }}
+                    >
+                      {item.price}
                     </Typography>
 
                     <Button
                       component={motion.button}
                       whileHover={{ 
                         scale: 1.1,
-                        boxShadow: `0 15px 40px ${alpha(colors.gold, 0.5)}`
+                        boxShadow: `0 15px 40px ${alpha(colors.green, 0.5)}`
                       }}
                       whileTap={{ scale: 0.95 }}
                       sx={{
-                        background: colors.gradientGold,
-                        color: colors.black,
+                        background: colors.gradientGreen,
+                        color: colors.white,
                         fontWeight: 800,
                         px: 3,
                         py: 1,
                         borderRadius: 2,
                         fontSize: '0.8rem',
                         minWidth: '120px',
-                        boxShadow: `0 10px 30px ${alpha(colors.gold, 0.4)}`,
+                        boxShadow: `0 10px 30px ${alpha(colors.green, 0.4)}`,
                         '&:hover': {
-                          background: colors.gradientGold,
+                          background: colors.gradientGreen,
                         },
                       }}
                       onClick={() => window.location.href = item.link}
@@ -1500,29 +1432,29 @@ export default function Sport() {
               component={motion.button}
               whileHover={{ 
                 scale: 1.05,
-                boxShadow: `0 20px 50px ${alpha(colors.gold, 0.4)}`
+                boxShadow: `0 20px 50px ${alpha(colors.green, 0.4)}`
               }}
               whileTap={{ scale: 0.95 }}
               variant="outlined"
               endIcon={<ArrowForward />}
               sx={{
-                borderColor: colors.gold,
-                color: colors.black,
+                borderColor: colors.green,
+                color: colors.white,
                 px: 5,
                 py: 1.5,
                 borderRadius: 2,
                 fontSize: '1rem',
                 fontWeight: 600,
-                background: colors.gradientGold,
+                background: colors.gradientGreen,
                 borderWidth: 2,
                 '&:hover': {
-                  borderColor: colors.gold,
-                  background: colors.gradientGold,
+                  borderColor: colors.green,
+                  background: colors.gradientGreen,
                   borderWidth: 2,
                 },
               }}
             >
-              Voir toutes les collections
+              View All Collections
             </Button>
           </Box>
         </Box>

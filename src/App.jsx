@@ -8,6 +8,13 @@ import Contact from './Components/Pages/Contact';
 import Layout from './Config/Layout';
 import NotFound from './Config/Notfound';
 import Sport from './Components/Links/Sport';
+import ProductCatalog from './Components/Links/ProductsCatalog';
+import Religion from './Components/Links/Religion';
+import AdminLayout from './Config/AdminLayout';
+import NewProduct from './Admin/NewProduct';
+import ProtectedRoute from './Config/ProtectedRoute';
+import ManageProducts from './Admin/ManageProducts';
+import SoldoutProduct from './Admin/SoldoutProduct';
 
 function App() {
   const router = createBrowserRouter([
@@ -36,19 +43,57 @@ function App() {
       )
     },
     {
-      path: '/login',
-      element: (
-        <Layout>
-          <Login />
-        </Layout>
-      )
-    },
-    {
       path: '/sport',
       element: (
         <Layout>
           <Sport />
         </Layout>
+      )
+    },
+    {
+      path: '/catalog',
+      element: (
+        <Layout>
+          <ProductCatalog />
+        </Layout>
+      )
+    },
+    {
+      path: '/religion',
+      element: (
+        <Layout>
+          <Religion />
+        </Layout>
+      )
+    },
+    {
+      path: '/Admin-Panel/Creating-New-Product',
+      element: (
+        <ProtectedRoute>
+          <AdminLayout>
+            <NewProduct />
+          </AdminLayout>
+        </ProtectedRoute>
+      )
+    },
+    {
+      path: '/Admin-Panel/Manage-Products',
+      element: (
+        <ProtectedRoute>
+          <AdminLayout>
+            <ManageProducts />
+          </AdminLayout>
+        </ProtectedRoute>
+      )
+    },
+    {
+      path: '/Admin-Panel/Sold-Out-Products',
+      element: (
+        <ProtectedRoute>
+          <AdminLayout>
+            <SoldoutProduct />
+          </AdminLayout>
+        </ProtectedRoute>
       )
     },
     {

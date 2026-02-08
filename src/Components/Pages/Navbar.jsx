@@ -634,6 +634,8 @@ const Navbar = () => {
           </ListItem>
         ))}
       </List>
+      
+      {/* Bottom connexion 
 
       <Box sx={{ p: 3, borderTop: `1px solid ${alpha(premiumColors.gold, 0.1)}` }}>
         <Button 
@@ -682,6 +684,8 @@ const Navbar = () => {
           ))}
         </Box>
       </Box>
+
+      */}
     </Box>
   );
 
@@ -832,6 +836,8 @@ const Navbar = () => {
                   height: 30
                 }} />
 
+                {/* Bottom connexion 
+
                 <Button
                   variant="outlined"
                   onClick={() => navigate('/login')}
@@ -855,6 +861,8 @@ const Navbar = () => {
                 >
                   Connexion
                 </Button>
+
+                */}
 
                 <IconButton
                   sx={{
