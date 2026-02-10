@@ -682,7 +682,7 @@ const getAuthToken = () => getToken();
                   startAdornment: <Typography mr={1} fontFamily={themeStyles.fontFamily}>$</Typography>,
                   inputProps: { min: 0, step: 0.01 }
                 }}
-                helperText={validationErrors.price || "Set the retail price in USD"}
+                helperText={validationErrors.price || "Set the retail price in TND"}
                 error={!!validationErrors.price}
               />
             </Grid>

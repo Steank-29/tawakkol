@@ -12,6 +12,7 @@ const connectDB = require('./config/database');
 // Import routes
 const adminRoutes = require('./routes/admin');
 const productRoutes = require('./routes/products');
+const orderRoutes = require('./routes/order');
 
 // Initialize app
 const app = express();
@@ -32,6 +33,7 @@ app.use(express.urlencoded({ extended: true }));
 // Routes
 app.use('/api/admin', adminRoutes);
 app.use('/api/products', productRoutes);
+app.use('/api/orders', orderRoutes);
 
 // Test route - SINGLE DEFINITION (removed duplicate)
 app.get('/', (req, res) => {

@@ -808,7 +808,7 @@ const SoldoutProduct = () => {
             <Grid item xs={12} md={3}>
               {renderMetricCard(
                 'TOTAL VALUE',
-                `$${stats.totalValue.toLocaleString()}`,
+                `${stats.totalValue.toLocaleString()} TND`,
                 <FinanceIcon sx={{ color: premiumTheme.secondary, fontSize: 32 }} />,
                 premiumTheme.secondary,
                 '+12.5% from last month'
@@ -1172,7 +1172,7 @@ const SoldoutProduct = () => {
                                 WebkitBackgroundClip: 'text',
                                 WebkitTextFillColor: 'transparent'
                               }}>
-                                ${value.toLocaleString()}
+                                {value.toLocaleString()} TND
                               </Typography>
                             </Box>
 
@@ -1410,7 +1410,7 @@ const SoldoutProduct = () => {
                             TOTAL VALUE
                           </Typography>
                           <Typography variant="h4" sx={{ fontWeight: 800 }}>
-                            ${(selectedProduct.stock * selectedProduct.price).toLocaleString()}
+                            {(selectedProduct.stock * selectedProduct.price).toLocaleString()} TND
                           </Typography>
                         </Paper>
                       </Grid>

@@ -161,6 +161,9 @@ const ManageProducts = () => {
   const [selected, setSelected] = useState([]);
   const [search, setSearch] = useState('');
   const [uploading, setUploading] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [productToDelete, setProductToDelete] = useState(null);
 
   const API_URL = 'http://localhost:5000/api/products';
   const token = localStorage.getItem('token') || 'your-token-here';
@@ -254,6 +257,28 @@ const ManageProducts = () => {
     }
   };
 
+  // DELETE FUNCTION - JUST ADDED THIS
+  const deleteProduct = async (productId) => {
+    try {
+      setDeleting(true);
+      await axios.delete(`${API_URL}/${productId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      
+      alert('Product deleted successfully!');
+      fetchProducts();
+    } catch (error) {
+      console.error('Delete error:', error);
+      alert(`Delete failed: ${error.response?.data?.message || error.message}`);
+    } finally {
+      setDeleting(false);
+      setDeleteDialogOpen(false);
+      setProductToDelete(null);
+    }
+  };
+
   // ==================== HANDLERS ====================
   const handleEditClick = (product) => {
     setSelectedProduct(product);
@@ -277,6 +302,18 @@ const ManageProducts = () => {
     setPreviewDialogOpen(true);
   };
 
+  // DELETE HANDLER - JUST ADDED THIS
+  const handleDeleteClick = (product) => {
+    setProductToDelete(product);
+    setDeleteDialogOpen(true);
+  };
+
+  const handleConfirmDelete = () => {
+    if (productToDelete) {
+      deleteProduct(productToDelete._id);
+    }
+  };
+
   const handleCloseEditDialog = () => {
     setEditDialogOpen(false);
     setSelectedProduct(null);
@@ -292,6 +329,12 @@ const ManageProducts = () => {
       mainImageFile: null,
       mainImagePreview: null
     });
+  };
+
+  // CLOSE DELETE DIALOG HANDLER - JUST ADDED THIS
+  const handleCloseDeleteDialog = () => {
+    setDeleteDialogOpen(false);
+    setProductToDelete(null);
   };
 
   const handleInputChange = (e) => {
@@ -400,6 +443,56 @@ const ManageProducts = () => {
     </AvatarGroup>
   );
 
+  // ==================== DELETE DIALOG - JUST ADDED THIS ====================
+  const renderDeleteDialog = () => (
+    <Dialog
+      open={deleteDialogOpen}
+      onClose={handleCloseDeleteDialog}
+      maxWidth="sm"
+      fullWidth
+    >
+      <DialogTitle sx={{
+        bgcolor: '#d32f2f',
+        color: 'white',
+        fontFamily: themeStyles.fontFamily,
+        fontWeight: 'bold'
+      }}>
+        Delete Product
+      </DialogTitle>
+      <DialogContent sx={{ p: 3 }}>
+        {productToDelete && (
+          <>
+            <Typography variant="body1" sx={{ mb: 2, fontFamily: themeStyles.fontFamily }}>
+              Are you sure you want to delete "{productToDelete.name}"?
+            </Typography>
+            <Typography variant="body2" sx={{ color: 'text.secondary', fontFamily: themeStyles.fontFamily }}>
+              This action cannot be undone.
+            </Typography>
+          </>
+        )}
+      </DialogContent>
+      <DialogActions sx={{ p: 2 }}>
+        <Button
+          onClick={handleCloseDeleteDialog}
+          disabled={deleting}
+          sx={{ color: themeStyles.textSecondary, fontFamily: themeStyles.fontFamily }}
+        >
+          Cancel
+        </Button>
+        <Button
+          onClick={handleConfirmDelete}
+          disabled={deleting}
+          variant="contained"
+          color="error"
+          startIcon={<DeleteIcon />}
+          sx={{ fontFamily: themeStyles.fontFamily }}
+        >
+          {deleting ? 'Deleting...' : 'Delete'}
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+
   // ==================== PREVIEW DIALOG ====================
   const renderPreviewDialog = () => (
     <Dialog
@@ -476,7 +569,7 @@ const ManageProducts = () => {
               <Grid item xs={6}>
                 <Typography variant="subtitle2" color="textSecondary">Price</Typography>
                 <Typography variant="h6" sx={{ color: themeStyles.secondary, fontWeight: 'bold' }}>
-                  ${selectedProduct.price}
+                  {selectedProduct.price} TND
                 </Typography>
               </Grid>
               <Grid item xs={6}>
@@ -487,8 +580,6 @@ const ManageProducts = () => {
                 <Typography variant="subtitle2" color="textSecondary">Category</Typography>
                 <Chip label={selectedProduct.category} size="small" sx={{ bgcolor: 'rgba(212,175,55,0.15)' }} />
               </Grid>
-             
-              
             </Grid>
 
             <Box sx={{ mb: 2 }}>
@@ -789,8 +880,6 @@ const ManageProducts = () => {
                 ))}
               </Grid>
             </Box>
-
-           
           </Grid>
         </Grid>
 
@@ -957,7 +1046,7 @@ const ManageProducts = () => {
                           </TableCell>
                           <TableCell align="right">
                             <Typography sx={{ fontWeight: 'bold', color: themeStyles.secondary }}>
-                              ${product.price}
+                              {product.price} TND
                             </Typography>
                           </TableCell>
                           <TableCell>{product.stock}</TableCell>
@@ -971,7 +1060,12 @@ const ManageProducts = () => {
                               <IconButton onClick={() => handleEditClick(product)} size="small">
                                 <EditIcon />
                               </IconButton>
-                              <IconButton size="small" color="error">
+                              {/* UPDATED DELETE BUTTON - JUST ADDED onClick */}
+                              <IconButton 
+                                onClick={() => handleDeleteClick(product)} 
+                                size="small" 
+                                color="error"
+                              >
                                 <DeleteIcon />
                               </IconButton>
                             </Box>
@@ -1002,6 +1096,8 @@ const ManageProducts = () => {
       {/* Dialogs */}
       {renderPreviewDialog()}
       {renderEditForm()}
+      {/* ADDED DELETE DIALOG */}
+      {renderDeleteDialog()}
 
       {/* FAB */}
     </Container>

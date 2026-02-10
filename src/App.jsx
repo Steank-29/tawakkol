@@ -15,6 +15,7 @@ import NewProduct from './Admin/NewProduct';
 import ProtectedRoute from './Config/ProtectedRoute';
 import ManageProducts from './Admin/ManageProducts';
 import SoldoutProduct from './Admin/SoldoutProduct';
+import Checkout from './Components/Pages/Checkout';
 
 function App() {
   const router = createBrowserRouter([
@@ -63,6 +64,14 @@ function App() {
       element: (
         <Layout>
           <Religion />
+        </Layout>
+      )
+    },
+    {
+      path: '/checkout',
+      element: (
+        <Layout>
+          <Checkout />
         </Layout>
       )
     },
