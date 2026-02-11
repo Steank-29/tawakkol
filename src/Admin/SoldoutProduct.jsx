@@ -294,7 +294,7 @@ const SoldoutProduct = () => {
   const [aiInsights, setAiInsights] = useState([]);
   const [performanceScore, setPerformanceScore] = useState(87);
 
-  const API_URL = 'http://localhost:5000/api/products';
+  const API_URL = 'https://tawakkol.onrender.com/api/products';
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 

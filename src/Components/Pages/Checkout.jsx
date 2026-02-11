@@ -217,7 +217,7 @@ const Checkout = () => {
         notes: formData.notes.trim()
       };
 
-      const API_URL = 'http://localhost:5000';
+      const API_URL = 'https://tawakkol.onrender.com';
       
       console.log('Submitting order to:', API_URL);
 

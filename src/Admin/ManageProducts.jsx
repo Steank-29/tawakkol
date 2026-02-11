@@ -165,7 +165,7 @@ const ManageProducts = () => {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [productToDelete, setProductToDelete] = useState(null);
 
-  const API_URL = 'http://localhost:5000/api/products';
+  const API_URL = 'https://tawakkol.onrender.com/api/products';
   const token = localStorage.getItem('token') || 'your-token-here';
 
   // Form state
