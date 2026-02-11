@@ -28,7 +28,9 @@ import {
   LinearProgress,
   Divider,
   Badge,
-  CircularProgress
+  CircularProgress,
+  MobileStepper,
+  SwipeableDrawer
 } from '@mui/material';
 import {
   FlashOn,
@@ -57,10 +59,12 @@ import {
   Person,
   FitnessCenter,
   ExpandMore,
-  Visibility
+  Visibility,
+  KeyboardArrowLeft,
+  KeyboardArrowRight
 } from '@mui/icons-material';
 import { motion, useInView, AnimatePresence } from 'framer-motion';
-import SwipeableViews from 'react-swipeable-views';
+import { useSwipeable } from 'react-swipeable';
 
 import heroImage from '../../assets/sport.png';
 import jerseyImage from '../../assets/jersey.png';
@@ -108,6 +112,35 @@ const premiumFeatures = [
   { icon: WaterDrop, text: 'Hydrophobe & Respirant', sub: 'Matériaux avancés' },
 ];
 
+const athleteTestimonials = [
+  {
+    name: 'Carlos Martinez',
+    title: 'Champion de Tennis',
+    avatar: athlete1,
+    rating: 5,
+    verified: true,
+    text: 'Cette collection a transformé ma façon de jouer. La respirabilité est incomparable.',
+    achievements: ['Roland Garros 2024', '3 Grands Chelems']
+  },
+  {
+    name: 'Sophie Laurent',
+    title: 'Athlète Olympique',
+    avatar: athlete2,
+    rating: 5,
+    verified: true,
+    text: 'Le confort et la liberté de mouvement sont exceptionnels. Je ne porte plus que ça.',
+    achievements: ['Médaillée Or 2024', 'Record du Monde']
+  },
+  {
+    name: 'James Chen',
+    title: 'Coach Fitness',
+    avatar: athlete3,
+    rating: 5,
+    verified: true,
+    text: 'La durabilité est incroyable. Après 2 ans d\'utilisation intensive, comme neuf.',
+    achievements: ['Top Trainer 2024', 'Nike Ambassador']
+  }
+];
 
 const techSpecs = {
   jersey: {
@@ -360,16 +393,33 @@ const ProductShowcase3D = ({ product }) => {
 
 const AthleteTestimonialCarousel = () => {
   const [activeIndex, setActiveIndex] = useState(0);
+  
+  const handlers = useSwipeable({
+    onSwipedLeft: () => setActiveIndex((prev) => (prev + 1) % athleteTestimonials.length),
+    onSwipedRight: () => setActiveIndex((prev) => (prev - 1 + athleteTestimonials.length) % athleteTestimonials.length),
+    trackMouse: true,
+    trackTouch: true
+  });
+
+  const handleNext = () => {
+    setActiveIndex((prev) => (prev + 1) % athleteTestimonials.length);
+  };
+
+  const handleBack = () => {
+    setActiveIndex((prev) => (prev - 1 + athleteTestimonials.length) % athleteTestimonials.length);
+  };
 
   return (
     <Box sx={{ position: 'relative', width: '100%' }}>
-      <SwipeableViews
-        index={activeIndex}
-        onChangeIndex={setActiveIndex}
-        enableMouseEvents
-      >
-        {athleteTestimonials.map((testimonial, index) => (
-          <Box key={index} sx={{ px: 2 }}>
+      <Box {...handlers} sx={{ px: 2 }}>
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeIndex}
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -50 }}
+            transition={{ duration: 0.3 }}
+          >
             <Card
               sx={{
                 background: alpha(colors.black, 0.6),
@@ -382,7 +432,7 @@ const AthleteTestimonialCarousel = () => {
               <Stack spacing={2}>
                 <Stack direction="row" spacing={2} alignItems="center">
                   <Avatar
-                    src={testimonial.avatar}
+                    src={athleteTestimonials[activeIndex].avatar}
                     sx={{
                       width: 60,
                       height: 60,
@@ -392,17 +442,17 @@ const AthleteTestimonialCarousel = () => {
                   <Box>
                     <Stack direction="row" alignItems="center" spacing={1}>
                       <Typography variant="subtitle1" fontWeight={700} color={colors.white}>
-                        {testimonial.name}
+                        {athleteTestimonials[activeIndex].name}
                       </Typography>
-                      {testimonial.verified && (
+                      {athleteTestimonials[activeIndex].verified && (
                         <Verified sx={{ color: colors.gold, fontSize: 16 }} />
                       )}
                     </Stack>
                     <Typography variant="body2" color={colors.goldSoft}>
-                      {testimonial.title}
+                      {athleteTestimonials[activeIndex].title}
                     </Typography>
                     <Rating
-                      value={testimonial.rating}
+                      value={athleteTestimonials[activeIndex].rating}
                       readOnly
                       size="small"
                       sx={{ mt: 0.5 }}
@@ -420,11 +470,11 @@ const AthleteTestimonialCarousel = () => {
                     fontSize: '0.95rem'
                   }}
                 >
-                  "{testimonial.text}"
+                  "{athleteTestimonials[activeIndex].text}"
                 </Typography>
 
                 <Stack direction="row" spacing={0.5} flexWrap="wrap">
-                  {testimonial.achievements.map((ach, idx) => (
+                  {athleteTestimonials[activeIndex].achievements.map((ach, idx) => (
                     <Chip
                       key={idx}
                       label={ach}
@@ -440,29 +490,45 @@ const AthleteTestimonialCarousel = () => {
                 </Stack>
               </Stack>
             </Card>
-          </Box>
-        ))}
-      </SwipeableViews>
+          </motion.div>
+        </AnimatePresence>
+      </Box>
 
-      <Stack direction="row" spacing={1} justifyContent="center" sx={{ mt: 2 }}>
-        {athleteTestimonials.map((_, idx) => (
-          <Box
-            key={idx}
-            onClick={() => setActiveIndex(idx)}
-            sx={{
-              width: 8,
-              height: 8,
-              borderRadius: '50%',
-              bgcolor: idx === activeIndex ? colors.gold : alpha(colors.white, 0.3),
-              cursor: 'pointer',
-              transition: 'all 0.3s',
-              '&:hover': {
-                bgcolor: idx === activeIndex ? colors.gold : alpha(colors.white, 0.5)
-              }
-            }}
-          />
-        ))}
-      </Stack>
+      <MobileStepper
+        variant="dots"
+        steps={athleteTestimonials.length}
+        position="static"
+        activeStep={activeIndex}
+        sx={{
+          background: 'transparent',
+          justifyContent: 'center',
+          mt: 2,
+          '& .MuiMobileStepper-dot': {
+            backgroundColor: alpha(colors.white, 0.3),
+            '&-active': {
+              backgroundColor: colors.gold
+            }
+          }
+        }}
+        nextButton={
+          <IconButton
+            onClick={handleNext}
+            size="small"
+            sx={{ color: colors.gold, '&:hover': { background: alpha(colors.gold, 0.1) } }}
+          >
+            <KeyboardArrowRight />
+          </IconButton>
+        }
+        backButton={
+          <IconButton
+            onClick={handleBack}
+            size="small"
+            sx={{ color: colors.gold, '&:hover': { background: alpha(colors.gold, 0.1) } }}
+          >
+            <KeyboardArrowLeft />
+          </IconButton>
+        }
+      />
     </Box>
   );
 };
